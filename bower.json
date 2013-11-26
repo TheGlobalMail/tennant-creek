@@ -1,0 +1,13 @@
+{
+  "name": "tennant-creek",
+  "dependencies": {
+    "jquery": "1.10.2",
+    "tgm-bootstrap": "git@github.com:TheGlobalMail/tgm-bootstrap.git#0.3.2",
+    "bootstrap": "2.3.0",
+    "requirejs": "~2.1.9",
+    "requirejs-plugins": "~1.0.2",
+    "lodash": "~2.3.0",
+    "font-awesome": "latest",
+    "jquery.scrollTo": "~1.4.6"
+  }
+}
