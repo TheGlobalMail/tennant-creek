@@ -10,9 +10,19 @@ define([
 
   var body;
 
+  var loadingStateUntil = [
+    'layout:ready',
+    'media:ready'
+  ];
+
+  var loadingStageComplete = _.after(loadingStateUntil.length, function() {
+    body.removeClass('loading');
+    events.trigger('loading:complete');
+  });
+
   var setBindings = function() {
-    events.on('media:ready', function() {
-      body.removeClass('loading');
+    _.each(loadingStateUntil, function(eventName) {
+      events.once(eventName, loadingStageComplete);
     });
   };
 
@@ -21,9 +31,9 @@ define([
 
     setBindings();
 
+    analytics.init();
     layout.init();
     media.init();
-    analytics.init();
   };
 
   return {

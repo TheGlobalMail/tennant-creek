@@ -2,10 +2,11 @@ require.config({
   paths: {
     jquery: '../components/jquery/jquery',
     lodash: '../components/lodash/dist/lodash',
-    config: './config',
+    settings: './settings',
     events: './libs/events',
     fatcontroller: './libs/fatcontroller',
     utils: './libs/utils',
+    scroll: './libs/scroll',
     scrollTo: '../components/jquery.scrollTo/jquery.scrollTo'
   },
   shim: {
@@ -19,10 +20,10 @@ require([
   'jquery',
   'events',
   './app/main',
-  'config'
+  'settings'
 ],
-function($, events, app, config) {
-  if (config.debugEvents) {
+function($, events, app, settings) {
+  if (settings.debugEvents) {
     window.fc = events;
   }
   $(app.init);

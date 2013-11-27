@@ -1,12 +1,14 @@
 define([
   'lodash',
   'fatcontroller',
-  'config'
-], function(_, fc, config) {
+  'settings'
+], function(_, fc, settings) {
   "use strict";
 
-  if (config.debugEvents) {
-    // Wrap `on` and `trigger` in log calls
+  // TODO: move event log code into FC and log each subscriber as they're called
+
+  if (settings.debugEvents) {
+    // Wrap `trigger`, `on` and `once` in log calls
 
     var _trigger = fc.trigger;
 
@@ -21,8 +23,6 @@ define([
         }
         console.trace();
         console.groupEnd();
-
-        // TODO: move event log code into FC and log each subscriber as they're called
       } else {
         console.log('Event triggered', args, Error().stack);
       }
@@ -31,7 +31,7 @@ define([
     };
 
     var _on = fc.on;
-
+    
     fc.on = function() {
       var args = Array.prototype.slice.apply(arguments);
 
@@ -43,6 +43,21 @@ define([
       }
 
       return _on.apply(null, args);
+    };
+
+    var _once = fc.once;
+
+    fc.once = function() {
+      var args = Array.prototype.slice.apply(arguments);
+
+      if (console.groupCollapsed && console.groupEnd && console.trace) {
+        // Log a stack trace
+        console.groupCollapsed('Event bound: ' + args[0]);
+        console.trace();
+        console.groupEnd();
+      }
+
+      return _once.apply(null, args);
     };
 
   }

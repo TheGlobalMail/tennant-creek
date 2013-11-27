@@ -3,10 +3,8 @@ define([
   'lodash',
   'events',
   'utils',
-  'config'
-],function($, _, events, utils, config) {
-
-  var articleName = location.pathname.split('/')[1] || '/';
+  'settings'
+],function($, _, events, utils, settings) {
 
   var pointsToTrack = {};
   _.each(_.range(10, 101, 10), function(percentage) {
@@ -14,15 +12,15 @@ define([
   });
 
   var logScrollTracking = function() {
-    var scrollPercentage = ((utils.getScrollY() + window.innerHeight) / document.height) * 100;
+    var scrollPercentage = ((utils.getScrollY() + window.innerHeight) / document.body.clientHeight) * 100;
     _.each(pointsToTrack, function(percentage) {
       if (scrollPercentage >= percentage) {
         var eventName = 'Read to ' + percentage + '%';
-        var event = ['_trackEvent', 'Read to: ' + articleName, eventName];
-        if (config.debugAnalytics) {
-          console.log.apply(null, event);
+        var event = ['_trackEvent', eventName];
+        if (settings.debugAnalytics) {
+          console.log(event);
         }
-        window._gaq && _gaq.push('_trackEvent', 'Read to: ' + articleName, eventName);
+        window._gaq && _gaq.push.apply(null, event);
         delete pointsToTrack[eventName];
       }
     });
@@ -30,11 +28,11 @@ define([
 
   var setBindings = function() {
     events.once('loading:complete', function() {
-      if (config.debugAnalytics) {
-        console.log('Tracking ')
+      if (settings.debugAnalytics) {
+        console.log('Now tracking for analytics')
       }
-      $(window).on('scroll', _.throttle(logScrollTracking, 50));
-    })
+      $(window).on('scroll', _.throttle(logScrollTracking, 75));
+    });
   };
 
   var init = function() {

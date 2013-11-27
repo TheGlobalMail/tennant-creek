@@ -1,7 +1,8 @@
 define([
-  '../.',
-  'lodash'
-], function ($, _) {
+  'jquery',
+  'lodash',
+  'utils'
+], function ($, _, utils) {
 
   var elementsToWatch = [];
 
@@ -9,10 +10,6 @@ define([
   var scrollY;
   var windowHeight;
   var fixedHeaderHeight;
-
-  var getScrollY = function() {
-    return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-  };
 
   var observe = function(element, bindings) {
     var obj = {
@@ -22,6 +19,37 @@ define([
     obj = initElement(obj);
     elementsToWatch.push(obj);
     return obj;
+  };
+
+  var checkElements = function() {
+    _.each(elementsToWatch, function(obj) {
+      // Check if an element is within the viewport and trigger
+      // events when an element enters or exits.
+      var offset = obj.offset;
+      var bindings = obj.bindings;
+      var position = offsetFromViewport(offset);
+
+      // Enter
+      if (position['in'] && !obj.inViewport) {
+        obj.inViewport = true;
+        if (bindings.enter) {
+          bindings.enter()
+        }
+        // Exit
+      } else if (position.out && obj.inViewport) {
+        obj.inViewport = false;
+        if (bindings.exit) {
+          bindings.exit()
+        }
+      }
+      // Above
+      if (position.above && bindings.above) {
+        bindings.above();
+        // Below
+      } else if (position.below && bindings.below) {
+        bindings.below();
+      }
+    });
   };
 
   var initElement = function(obj) {
@@ -71,45 +99,12 @@ define([
     return position;
   };
 
-  var checkElement = function(obj) {
-    // Check if an element is within the viewport and trigger
-    // events when an element enters or exits.
-    var offset = obj.offset;
-    var bindings = obj.bindings;
-    var position = offsetFromViewport(offset);
-
-    // Enter
-    if (position['in'] && !obj.inViewport) {
-      obj.inViewport = true;
-      if (bindings.enter) {
-        bindings.enter()
-      }
-      // Exit
-    } else if (position.out && obj.inViewport) {
-      obj.inViewport = false;
-      if (bindings.exit) {
-        bindings.exit()
-      }
-    }
-    // Above
-    if (position.above && bindings.above) {
-      bindings.above();
-      // Below
-    } else if (position.below && bindings.below) {
-      bindings.below();
-    }
-  };
-
-  var checkElements = function() {
-    _.each(elementsToWatch, checkElement);
-  };
-
   var getWindowHeight = function() {
     return window.innerHeight - (fixedHeaderHeight);
   };
 
   var onScroll = function() {
-    scrollY = getScrollY();
+    scrollY = utils.getScrollY();
     checkElements();
   };
 
@@ -126,7 +121,7 @@ define([
   var init = function() {
     fixedHeaderHeight = $('.navbar').outerHeight();
 
-    scrollY = getScrollY();
+    scrollY = utils.getScrollY();
     windowHeight = getWindowHeight();
     setBindings();
   };
@@ -134,7 +129,7 @@ define([
   init();
 
   return {
-    checkElements: checkElements,
-    observe: observe
+    observe: observe,
+    checkElements: checkElements
   };
 });

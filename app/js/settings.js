@@ -5,7 +5,8 @@ define(function() {
     // flags
     quiet: false,
     debug: false,
-    debugEvents: false
+    debugEvents: false,
+    debugAnalytics: false
   };
 
   if (location.search.indexOf('quiet') != -1) {
@@ -24,6 +25,14 @@ define(function() {
   ) {
     // Log event bindings and triggers with stack traces
     config.debugEvents = true;
+  }
+
+  if (
+    location.search.indexOf('analytics') != -1 ||
+    config.debug
+  ) {
+    // Log events that we're tracking on Google Analytics
+    config.debugAnalytics = true;
   }
 
   return config;
