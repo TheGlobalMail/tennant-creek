@@ -100,6 +100,54 @@ article {
 
 .article-header {
   margin-bottom: 30px;
+  .slide {
+    &:nth-child(1) {
+      background: url('/images/_MG_6817.jpg') no-repeat;
+      background-size: cover;
+      .text-container {
+        margin-top: 6em;
+      }
+      h1,
+      span {
+        text-align: center;
+      }
+      h1 {
+        font-size: 4em;
+      }
+      span {
+        display: block;
+        margin: 3em;
+      }
+    }
+    &:nth-child(2) {
+      .text-container {
+        position: relative;
+      }
+      p {
+        position: absolute;
+        bottom: 1em;
+        left: 1em;
+        width: 50%;
+        color: white;
+        text-align: center;
+        font-size: 2em;
+        line-height: 1.25;
+      }
+    }
+    &:nth-child(3) {
+      background: url('/images/MPB20048.jpg') no-repeat;
+      background-size: cover;
+      .text-container {
+        margin-top: 6em;
+      }
+      p {
+        color: white;
+        text-align: center;
+        font-size: 2em;
+        line-height: 1.25;
+      }
+    }
+  }
 }
 
 .article-section {
@@ -173,13 +221,18 @@ article {
     }
   }
   .background {
+    position: absolute;
+    top: 0;
     z-index: 1;
     width: 100%;
     height: 100%;
-    position: absolute;
-    top: 0;
-    img {
-      width: 100%;
+    overflow: hidden;
+    video {
+      min-width: 100%;
+      min-height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
   }
 }
