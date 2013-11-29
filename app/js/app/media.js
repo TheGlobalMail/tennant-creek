@@ -16,13 +16,15 @@ define([
       var video = $(element);
       scroll.observe(video, {
         viewportTopOffset: fixedHeaderHeight,
-        contained: function() {
+        contained: function(obj) {
+          var element = obj.element[0];
           if (!currentlyPlaying) {
             element.play();
             currentlyPlaying = true;
           }
         },
-        exit: function() {
+        exit: function(obj) {
+          var element = obj.element[0];
           element.pause();
           element.currentTime = 0;
           currentlyPlaying = false;

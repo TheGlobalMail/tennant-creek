@@ -6,7 +6,7 @@ define([
 
   var elementsToWatch = [];
 
-  var defaultSettings = _.extend(viewport._defaultSettings, {
+  var defaultSettings = _.extend(_.clone(viewport._defaultSettings), {
     // Bindings
     enter: null,
     exit: null,
@@ -21,7 +21,7 @@ define([
   var observe = function(element, settings) {
     var obj = {
       element: element,
-      settings: _.extend(defaultSettings, settings)
+      settings: _.extend(_.clone(defaultSettings), settings)
     };
     elementsToWatch.push(obj);
     return obj;
