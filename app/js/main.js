@@ -5,7 +5,7 @@ require.config({
     settings: './settings',
     events: './libs/events',
     fatcontroller: './libs/fatcontroller',
-    utils: './libs/utils',
+    viewport: './libs/viewport',
     scroll: './libs/scroll',
     scrollTo: '../components/jquery.scrollTo/jquery.scrollTo'
   },

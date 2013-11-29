@@ -2,38 +2,31 @@ define([
   'jquery',
   'lodash',
   'scroll',
-  'events'
-], function($, _, scroll, events) {
+  'events',
+  'viewport'
+], function($, _, scroll, events, viewport) {
 
   var slideContainers;
   var navBar;
   var articleFooter;
 
   var sizeFooter = function() {
-    console.log(articleFooter)
     articleFooter.css('height', window.innerHeight);
   };
 
   var sizeSlideContainers = function() {
-    navBarHeight = navBar.outerHeight();
+    var navBarHeight = navBar.outerHeight();
     slideContainers.each(function() {
       var container = $(this);
       var slides = container.find('.slide');
-      var videoSlides = slides.has('video');
       container.height((window.innerHeight - navBarHeight) * slides.length);
-      _.each(slides, function(element, i) {
-        var slide = $(element);
-        slide.css({
-          height: window.innerHeight - navBarHeight,
-//          top: navBarHeight,
-          'z-index': slides.length - i + 1
+      // Size the individual slides
+      _.each(slides, function(element) {
+        $(element).css({
+          height: window.innerHeight - navBarHeight
         });
       });
     });
-  };
-
-  var setBindings = function() {
-
   };
 
   var init = function() {
@@ -41,7 +34,6 @@ define([
     navBar = $('.navbar');
     articleFooter = $('.article-footer');
 
-    setBindings();
     sizeSlideContainers();
     sizeFooter();
 

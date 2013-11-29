@@ -2,9 +2,9 @@ define([
   'jquery',
   'lodash',
   'events',
-  'utils',
+  'viewport',
   'settings'
-],function($, _, events, utils, settings) {
+],function($, _, events, viewport, settings) {
 
   var pointsToTrack = {};
   _.each(_.range(10, 101, 10), function(percentage) {
@@ -12,7 +12,7 @@ define([
   });
 
   var logScrollTracking = function() {
-    var scrollPercentage = ((utils.getScrollY() + window.innerHeight) / document.body.clientHeight) * 100;
+    var scrollPercentage = ((viewport.getScrollY() + window.innerHeight) / document.body.clientHeight) * 100;
     _.each(pointsToTrack, function(percentage) {
       if (scrollPercentage >= percentage) {
         var eventName = 'Read to ' + percentage + '%';

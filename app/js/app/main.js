@@ -2,10 +2,11 @@ define([
   'jquery',
   'lodash',
   'events',
+  'scroll',
   './layout',
   './media',
   './analytics'
-], function($, _, events, layout, media, analytics) {
+], function($, _, events, scroll, layout, media, analytics) {
   'use strict';
 
   var body;
@@ -16,6 +17,7 @@ define([
   ];
 
   var loadingStageComplete = _.after(loadingStateUntil.length, function() {
+    scroll.checkElements();
     body.removeClass('loading');
     events.trigger('loading:complete');
   });
