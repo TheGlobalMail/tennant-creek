@@ -15,12 +15,12 @@ define([
     var scrollPercentage = ((viewport.getScrollY() + window.innerHeight) / document.body.clientHeight) * 100;
     _.each(pointsToTrack, function(percentage) {
       if (scrollPercentage >= percentage) {
+        var gaCommand = '_trackEvent';
         var eventName = 'Read to ' + percentage + '%';
-        var event = ['_trackEvent', eventName];
         if (settings.debugAnalytics) {
-          console.log(event);
+          console.log([gaCommand, eventName]);
         }
-        window._gaq && _gaq.push.apply(null, event);
+        window._gaq && _gaq.push([gaCommand, eventName]);
         delete pointsToTrack[eventName];
       }
     });
