@@ -244,10 +244,9 @@ module.exports = function(grunt) {
           dest: '<%= project.dist %>',
           src: [
             'index.html',
-            'audio/*.mp3',
-            'video/*',
-            'components/soundmanager/swf/*',
-            'components/font-awesome/font/*',
+            'assets/audio/*',
+            'assets/images/*',
+            'assets/video/*',
             '*.{ico,txt}',
             '.htaccess',
             'images/*'
@@ -268,12 +267,12 @@ module.exports = function(grunt) {
     cdn: {
       dist: {
         src: ['<%= project.dist %>/index.html'],
-        cdn: 'http://bulga.theglobalmail.org'
+        cdn: 'http://tennant-creek.theglobalmail.org'
       },
 
       staging: {
         src: ['<%= cdn.dist.src %>'],
-        cdn: 'http://tennant-creek-staging-assets.theglobalmail.org'
+        cdn: 'http://tennant-creek-staging.theglobalmail.org'
       }
     },
 
