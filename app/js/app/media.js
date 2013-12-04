@@ -2,29 +2,26 @@ define([
   'jquery',
   'lodash',
   'scroll',
-  'events'
-], function($, _, scroll, events) {
+  'events',
+  'viewport'
+], function($, _, scroll, events, viewport) {
 
   var slideContainers;
   var autoplayVideos;
-  var fixedHeaderHeight;
 
   // TODO: fade in/out
   var bindAutoplayVideos = function() {
     _.each(autoplayVideos, function(element) {
       var currentlyPlaying = false;
-      var video = $(element);
-      scroll.observe(video, {
-        viewportTopOffset: fixedHeaderHeight,
-        contained: function(obj) {
-          var element = obj.element[0];
+
+      scroll.track(element, {
+        contained: function(element) {
           if (!currentlyPlaying) {
             element.play();
             currentlyPlaying = true;
           }
         },
-        exit: function(obj) {
-          var element = obj.element[0];
+        exit: function(element) {
           element.pause();
           element.currentTime = 0;
           currentlyPlaying = false;
@@ -34,20 +31,20 @@ define([
   };
 
   var onEnterSlideContainer = function(element) {
-    var slideContainer = $(element);
-    slideContainer.addClass('in-viewport');
+    $(element).addClass('in-viewport');
   };
 
   var setBindings = function() {
     bindAutoplayVideos();
 
-    scroll.observe(slideContainers, {
-      enter: onEnterSlideContainer
-    });
+    _.each(slideContainers, function(element) {
+      scroll.track(element, {
+        enter: onEnterSlideContainer
+      });
+    })
   };
 
   var init = function() {
-    fixedHeaderHeight = $('.navbar').outerHeight();
     slideContainers = $('.slide-container');
     autoplayVideos = $('video.autoplay-when-visible');
 

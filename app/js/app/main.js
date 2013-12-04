@@ -3,10 +3,11 @@ define([
   'lodash',
   'events',
   'scroll',
+  'viewport',
   './layout',
   './media',
   './analytics'
-], function($, _, events, scroll, layout, media, analytics) {
+], function($, _, events, scroll, viewport, layout, media, analytics) {
   'use strict';
 
   var body;
@@ -33,9 +34,14 @@ define([
 
     setBindings();
 
+    viewport.setViewport({
+      topOffset: $('.navbar').outerHeight()
+    });
+
     analytics.init();
     layout.init();
     media.init();
+    scroll.init();
   };
 
   return {
