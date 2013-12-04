@@ -108,9 +108,7 @@ article {
     color: #fff;
     text-shadow: 0 0 5px #000;
     &:nth-child(1) {
-      background: url('/assets/images/kid-car-jump-cover.jpg') no-repeat;
-      background-size: cover;
-      .text-container { margin-top: 2em; }
+      background-image: url('/assets/images/kid-car-jump-cover.jpg');
 
       .headline {
         text-align: center;
@@ -120,7 +118,7 @@ article {
         text-transform: uppercase;
         font-weight: normal;
         line-height: 0.9;
-        margin: 0;
+        margin: 1em 0 0 0;
         b { font-weight: normal; }
         .char {
           display: inline;
@@ -164,34 +162,51 @@ article {
         margin: 0.5em; 
         opacity: 0.6;
       } 
-      .description {
-        position: absolute;
-        bottom: 1em;
-        right: 1em;
-      }
     }
     &:nth-child(2) {
       .text-container {
         position: relative;
       }
-      .description {
-        position: absolute;
-        bottom: 0;
-        left: 1em;
-      }
     }
     &:nth-child(3) {
-      background: url('/assets/images/waitcoat-kids-sunset-MPB20504a.jpg') no-repeat;
-      background-size: cover;
-      .text-container {
-        margin-top: 6em;
-      }
-      .description {
-        position: absolute;
-        top: -2em;
-        right: 1em;
+      background-image: url('/assets/images/waitcoat-kids-sunset-MPB20504a.jpg');
+    }
+  }
+}
 
+.slide-container {
+  .slide {
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  &.olive-house {
+    .slide {
+      &:nth-child(1) {
+        background-image: url('/assets/images/olive-yard-MPB29990.jpg');
+        .description {
+          position: absolute;
+          bottom: 1em;
+          left: 1em;
+        }
       }
+      &:nth-child(2) {
+        background-image: url('/assets/images/olive-MPB20030.jpg');
+        .description {
+          position: absolute;
+          bottom: 1em;
+          right: 1em;
+        }
+        
+      }
+      &:nth-child(3) {
+        background-image: url('/assets/images/olive-house-MPB20048.jpg');
+        .description {
+          position: absolute;
+          bottom: 1em;
+          left: 1em;
+        }      
+      }
+
     }
   }
 }
@@ -223,9 +238,6 @@ article {
     display: block;
     content: '';
   }
-  &:after {
-    // margin-bottom: 1em;
-  }
 }
 
 .vignette(@vignetteSize: 50px) {
@@ -234,17 +246,36 @@ article {
   border-bottom: 1px solid rgba(0,0,0,0.8);
 }
 
+.text-and-bg-position-classes(@textWidth: 420px) {
+  &.text-top-left .text      { position: absolute; top: 1em; left: 1em; }
+  &.text-top-right .text     { position: absolute; top: 1em; right: 1em; }
+  &.text-top-center .text    { position: absolute; top: 1em; left: 50%; margin-left: @textWidth * -0.5; }
+  &.text-bottom-left .text   { position: absolute; bottom: 1em; left: 1em; }
+  &.text-bottom-right .text  { position: absolute; bottom: 1em; right: 1em; }
+  &.text-bottom-center .text { position: absolute; bottom: 1em; left: 50%; margin-left: @textWidth * -0.5; }
+  &.bg-top-left              { background-position: top left; }
+  &.bg-top-right             { background-position: top right; }
+  &.bg-top-center            { background-position: top center; }
+  &.bg-center-left           { background-position: center left; }
+  &.bg-center-right          { background-position: center right; }
+  &.bg-bottom-left           { background-position: bottom left; }
+  &.bg-bottom-right          { background-position: bottom right; }
+  &.bg-bottom-center         { background-position: bottom center; }  
+}
+
 .slide {
+  @textWidth: 420px;
   position: relative;
   width: 100%;
   overflow: hidden;
+  .text-and-bg-position-classes(@textWidth);
   .text-container {
     position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
     z-index: 2;
-    .description {
+    .text {
       .bigwhitecondensed();
       .topBottomBorder();
     }
@@ -321,27 +352,12 @@ article {
   margin: 2em 0;
   position: relative;
   .vignette(40px);
+  .text-and-bg-position-classes(@textWidth);
   .text {
     .bigwhitecondensed(@textWidth);
     .topBottomBorder();
     position: absolute;
   }
-  &.text-top-left .text      { top: 1em; left: 1em; }
-  &.text-top-right .text     { top: 1em; right: 1em; }
-  &.text-top-center .text    { top: 1em; left: 50%; margin-left: @textWidth * -0.5; }
-  &.text-bottom-left .text   { bottom: 1em; left: 1em; }
-  &.text-bottom-right .text  { bottom: 1em; right: 1em; }
-  &.text-bottom-center .text { bottom: 1em; left: 50%; margin-left: @textWidth * -0.5; }
-
-  &.bg-top-left      { background-position: top left; }
-  &.bg-top-right     { background-position: top right; }
-  &.bg-top-center    { background-position: top center; }
-  &.bg-center-left   { background-position: center left; }
-  &.bg-center-right  { background-position: center right; }
-  &.bg-bottom-left   { background-position: bottom left; }
-  &.bg-bottom-right  { background-position: bottom right; }
-  &.bg-bottom-center { background-position: bottom center; }
-
 }
 
 .article-footer {
