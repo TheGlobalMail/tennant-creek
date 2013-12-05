@@ -8,6 +8,7 @@ define([
 
   var slideContainers;
   var autoplayVideos;
+  var autoplayAudio;
   var videoContainers;
 
   var jsCanPlayVideo = (function() {
@@ -16,14 +17,14 @@ define([
     return !video.paused;
   })();
 
-  var playVideo = function(element) {
+  var play = function(element) {
     element.play();
     if (element.paused !== true) {
       videoContainers.has(element).addClass('playing');
     }
   };
 
-  var pauseVideo = function(element, preservePosition) {
+  var pause = function(element, preservePosition) {
     element.pause();
     if (!preservePosition) {
       element.currentTime = 0;
@@ -42,12 +43,12 @@ define([
         scroll.track(element, {
           contained: function(element) {
             if (element.paused && !hasPlayed) {
-              playVideo(element);
+              play(element);
               hasPlayed = true;
             }
           },
           exit: function(element) {
-            pauseVideo(element);
+            pause(element);
             hasPlayed = false;
           }
         });
@@ -55,12 +56,35 @@ define([
 
       controls.on('click', function() {
         if (element.paused) {
-          playVideo(element);
+          play(element);
           hasPlayed = true;
         } else {
-          pauseVideo(element);
+          pause(element);
         }
-      })
+      });
+    });
+  };
+
+  var bindAutoplayAudio = function() {
+    _.each(autoplayAudio, function(element) {
+      var container = $(element);
+      var audio = container.find('audio')[0];
+      var hasPlayed = false;
+
+      if (jsCanPlayVideo) {
+        scroll.track(container, {
+          contained: function(element) {
+            if (audio.paused && !hasPlayed) {
+              play(audio);
+              hasPlayed = true;
+            }
+          },
+          exit: function(element) {
+            pause(audio);
+            hasPlayed = false;
+          }
+        });
+      }
     });
   };
 
@@ -70,6 +94,7 @@ define([
 
   var setBindings = function() {
     bindAutoplayVideos();
+    bindAutoplayAudio();
 
     _.each(slideContainers, function(element) {
       scroll.track(element, {
@@ -81,6 +106,7 @@ define([
   var init = function() {
     slideContainers = $('.slide-container');
     autoplayVideos = $('video.autoplay-when-visible');
+    autoplayAudio = $('div.autoplay-when-visible');
     videoContainers = $('.video-container');
 
     setBindings();
