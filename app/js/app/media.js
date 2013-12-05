@@ -8,25 +8,59 @@ define([
 
   var slideContainers;
   var autoplayVideos;
+  var videoContainers;
+
+  var jsCanPlayVideo = (function() {
+    var video = document.createElement('video');
+    video.play();
+    return !video.paused;
+  })();
+
+  var playVideo = function(element) {
+    element.play();
+    if (element.paused !== true) {
+      videoContainers.has(element).addClass('playing');
+    }
+  };
+
+  var pauseVideo = function(element, preservePosition) {
+    element.pause();
+    if (!preservePosition) {
+      element.currentTime = 0;
+    }
+    videoContainers.has(element).removeClass('playing');
+  };
 
   // TODO: fade in/out
   var bindAutoplayVideos = function() {
     _.each(autoplayVideos, function(element) {
-      var currentlyPlaying = false;
+      var container = videoContainers.has(element);
+      var controls = container.find('.controls');
+      var hasPlayed = false;
 
-      scroll.track(element, {
-        contained: function(element) {
-          if (!currentlyPlaying) {
-            element.play();
-            currentlyPlaying = true;
+      if (jsCanPlayVideo) {
+        scroll.track(element, {
+          contained: function(element) {
+            if (element.paused && !hasPlayed) {
+              playVideo(element);
+              hasPlayed = true;
+            }
+          },
+          exit: function(element) {
+            pauseVideo(element);
+            hasPlayed = false;
           }
-        },
-        exit: function(element) {
-          element.pause();
-          element.currentTime = 0;
-          currentlyPlaying = false;
+        });
+      }
+
+      controls.on('click', function() {
+        if (element.paused) {
+          playVideo(element);
+          hasPlayed = true;
+        } else {
+          pauseVideo(element);
         }
-      });
+      })
     });
   };
 
@@ -47,6 +81,7 @@ define([
   var init = function() {
     slideContainers = $('.slide-container');
     autoplayVideos = $('video.autoplay-when-visible');
+    videoContainers = $('.video-container');
 
     setBindings();
     events.trigger('media:ready');

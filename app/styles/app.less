@@ -335,13 +335,6 @@ article {
   position: relative;
 }
 
-
-.autoplay-when-visible {
-  display: block;
-  width: 100%;
-  margin: 2em auto;
-}
-
 .text-over-bg-image {
   @textWidth: 420px;
   background-repeat: no-repeat;
@@ -371,5 +364,52 @@ article {
     list-style: none;
     margin: 4em;
     color: white;
+  }
+}
+
+.autoplay-when-visible {
+  display: block;
+  width: 100%;
+  margin: 2em auto;
+}
+
+.video-container {
+  position: relative;
+  margin: 2em auto;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  video {
+    position: relative;
+    z-index: 1;
+    &.autoplay-when-visible {
+      margin: 0;
+    }
+  }
+  .extras {
+    width: 700px;
+    min-height: 40px;
+    margin: 10px auto 13px auto;
+  }
+  .controls {
+    cursor: pointer;
+    width: 40px;
+    float: left;
+  }
+  .caption {
+    margin: 0 0 0 50px;
+  }
+  .icon {
+    font-size: 40px;
+    color: #333;
+  }
+  .icon-stop {
+    display: none;
+  }
+  &.playing {
+    .icon-stop {
+      display: block;
+    }
+    .icon-play {
+      display: none;
+    }
   }
 }
