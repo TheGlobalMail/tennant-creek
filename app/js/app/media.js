@@ -9,6 +9,7 @@ define([
   var slideContainers;
   var autoplayMedia;
   var videoContainers;
+  var parallaxBackgrounds;
 
   var jsCanPlayVideo = (function() {
     var video = document.createElement('video');
@@ -124,6 +125,15 @@ define([
     $(element).addClass('in-viewport');
   };
 
+  var onExitParallax = function(element) {
+    $(element).removeClass('in-viewport');
+  };
+
+  var onEnterParallax = function(element) {
+    $(element).addClass('in-viewport');
+  };
+
+
   var setBindings = function() {
     bindAutoplayMedia();
 
@@ -132,12 +142,21 @@ define([
         enter: onEnterSlideContainer
       });
     })
+
+    _.each(parallaxBackgrounds, function(element) {
+      scroll.track(element, {
+        enter:  onEnterParallax,
+        exit:   onExitParallax
+      });
+    })
+
   };
 
   var init = function() {
     slideContainers = $('.slide-container');
     autoplayMedia = $('.autoplay-when-visible');
     videoContainers = $('.video-container');
+    parallaxBackgrounds = $('.text-over-bg-image');
 
     initMedia();
     setBindings();
