@@ -10,6 +10,7 @@ define([
   var autoplayMedia;
   var autoplayAudio;
   var videoContainers;
+  var parallaxBackgrounds;
 
   var jsCanPlayVideo = (function() {
     var video = document.createElement('video');
@@ -69,6 +70,11 @@ define([
     $(element).addClass('in-viewport');
   };
 
+  var onExitSlideContainer = function(element) {
+    $(element).removeClass('in-viewport');
+  };
+
+
   var setBindings = function() {
     bindAutoplayMedia();
 
@@ -77,12 +83,21 @@ define([
         enter: onEnterSlideContainer
       });
     })
+
+    _.each(parallaxBackgrounds, function(element) {
+      scroll.track(element, {
+        enter: onEnterSlideContainer,
+        exit: onExitSlideContainer
+      });
+    })
+
   };
 
   var init = function() {
     slideContainers = $('.slide-container');
     autoplayMedia = $('.autoplay-when-visible');
     videoContainers = $('.video-container');
+    parallaxBackgrounds = $('.text-over-bg-image');
 
     setBindings();
     events.trigger('media:ready');
