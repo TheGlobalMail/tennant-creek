@@ -288,6 +288,7 @@ article {
     height: 100%;
     overflow: hidden;
     video {
+      width: auto;
       min-width: 100%;
       min-height: 100%;
       position: absolute;
@@ -367,11 +368,16 @@ article {
   }
 }
 
+video {
+  width: 100%;
+}
+
 .autoplay-when-visible {
   display: block;
-  width: 100%;
   margin: 2em auto;
-  &.audio {
+  position: relative;
+  .video-container &,
+  .text-over-bg-image & {
     margin: 0;
   }
   .text-over-bg-image & {
@@ -390,15 +396,13 @@ article {
   video {
     position: relative;
     z-index: 1;
-    &.autoplay-when-visible {
-      margin: 0;
-    }
   }
-  .extras {
-    width: 700px;
-    min-height: 40px;
-    margin: 10px auto 13px auto;
-  }
+}
+
+.video-extras {
+  width: 700px;
+  min-height: 40px;
+  margin: 10px auto 13px auto;
   .controls {
     cursor: pointer;
     width: 40px;
@@ -414,7 +418,7 @@ article {
   .icon-stop {
     display: none;
   }
-  &.playing {
+  .playing & {
     .icon-stop {
       display: block;
     }

@@ -249,7 +249,8 @@ module.exports = function(grunt) {
             'assets/video/*',
             '*.{ico,txt}',
             '.htaccess',
-            'images/*'
+            'images/*',
+            'components/font-awesome/fonts/*'
           ]
         }]
       }

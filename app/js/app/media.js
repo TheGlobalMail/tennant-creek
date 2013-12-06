@@ -7,7 +7,7 @@ define([
 ], function($, _, scroll, events, viewport) {
 
   var slideContainers;
-  var autoplayVideos;
+  var autoplayMedia;
   var autoplayAudio;
   var videoContainers;
 
@@ -17,14 +17,14 @@ define([
     return !video.paused;
   })();
 
-  var play = function(element) {
+  var playMedia = function(element) {
     element.play();
     if (element.paused !== true) {
       videoContainers.has(element).addClass('playing');
     }
   };
 
-  var pause = function(element, preservePosition) {
+  var pauseMedia = function(element, preservePosition) {
     element.pause();
     if (!preservePosition) {
       element.currentTime = 0;
@@ -33,58 +33,35 @@ define([
   };
 
   // TODO: fade in/out
-  var bindAutoplayVideos = function() {
-    _.each(autoplayVideos, function(element) {
-      var container = videoContainers.has(element);
-      var controls = container.find('.controls');
-      var hasPlayed = false;
-
-      if (jsCanPlayVideo) {
-        scroll.track(element, {
-          contained: function(element) {
-            if (element.paused && !hasPlayed) {
-              play(element);
-              hasPlayed = true;
-            }
-          },
-          exit: function(element) {
-            pause(element);
-            hasPlayed = false;
-          }
-        });
-      }
-
-      controls.on('click', function() {
-        if (element.paused) {
-          play(element);
-          hasPlayed = true;
-        } else {
-          pause(element);
-        }
-      });
-    });
-  };
-
-  var bindAutoplayAudio = function() {
-    _.each(autoplayAudio, function(element) {
-      var container = $(element);
-      var audio = container.find('audio')[0];
+  var bindAutoplayMedia = function() {
+    _.each(autoplayMedia, function(container) {
+      var media = $(container).find('video, audio')[0];
+//      var controls = container.find('.controls');
       var hasPlayed = false;
 
       if (jsCanPlayVideo) {
         scroll.track(container, {
-          contained: function(element) {
-            if (audio.paused && !hasPlayed) {
-              play(audio);
+          contained: function() {
+            if (media.paused && !hasPlayed) {
+              playMedia(media);
               hasPlayed = true;
             }
           },
-          exit: function(element) {
-            pause(audio);
+          exit: function() {
+            pauseMedia(media);
             hasPlayed = false;
           }
         });
       }
+
+//      controls.on('click', function() {
+//        if (element.paused) {
+//          playMedia(element);
+//          hasPlayed = true;
+//        } else {
+//          pauseMedia(element);
+//        }
+//      });
     });
   };
 
@@ -93,8 +70,7 @@ define([
   };
 
   var setBindings = function() {
-    bindAutoplayVideos();
-    bindAutoplayAudio();
+    bindAutoplayMedia();
 
     _.each(slideContainers, function(element) {
       scroll.track(element, {
@@ -105,8 +81,7 @@ define([
 
   var init = function() {
     slideContainers = $('.slide-container');
-    autoplayVideos = $('video.autoplay-when-visible');
-    autoplayAudio = $('div.autoplay-when-visible');
+    autoplayMedia = $('.autoplay-when-visible');
     videoContainers = $('.video-container');
 
     setBindings();
