@@ -141,15 +141,14 @@ define([
       scroll.track(element, {
         enter: onEnterSlideContainer
       });
-    })
+    });
 
     _.each(parallaxBackgrounds, function(element) {
       scroll.track(element, {
         enter:  onEnterParallax,
         exit:   onExitParallax
       });
-    })
-
+    });
   };
 
   var init = function() {
