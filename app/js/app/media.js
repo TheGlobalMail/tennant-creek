@@ -70,8 +70,12 @@ define([
     $(element).addClass('in-viewport');
   };
 
-  var onExitSlideContainer = function(element) {
+  var onExitParallax = function(element) {
     $(element).removeClass('in-viewport');
+  };
+
+  var onEnterParallax = function(element) {
+    $(element).addClass('in-viewport');
   };
 
 
@@ -86,8 +90,8 @@ define([
 
     _.each(parallaxBackgrounds, function(element) {
       scroll.track(element, {
-        enter: onEnterSlideContainer,
-        exit: onExitSlideContainer
+        enter:  onEnterParallax,
+        exit:   onExitParallax
       });
     })
 
