@@ -119,7 +119,9 @@ define([
           boundingRect = container[0].getBoundingClientRect()
           viewportAndRect = window.innerHeight + boundingRect.height;
           bgPercentage = ( boundingRect.bottom / viewportAndRect * 100 ) * parallaxMultiplier + multiplierOffset + '%';
-          container.css('background-position-y', bgPercentage);
+          requestAnimationFrame(function() {
+            container.css('background-position-y', bgPercentage);
+          });
         },
         exit: function() {
           container.removeClass('in-viewport');
@@ -141,7 +143,7 @@ define([
           '<i class="stop icon icon-stop"></i>' +
         '</div>' +
         '<div class="progress-bar">' +
-          '<div class="progress" style="width: 60%;"></div>' +
+          '<div class="progress" style="width: 0;"></div>' +
         '</div>'
       ).appendTo(container);
     })
@@ -162,7 +164,7 @@ define([
 
   var setBindings = function() {
     bindAutoplayMedia();
-    bindParallax();
+//    bindParallax();
 
     _.each(slideContainers, function(element) {
       scroll.track(element, {
