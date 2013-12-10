@@ -121,16 +121,16 @@ define([
     })
   };
 
-  var onEnterSlideContainer = function(element) {
-    $(element).addClass('in-viewport');
+  var onEnterSlideContainer = function(obj) {
+    $(obj.element).addClass('in-viewport');
   };
 
-  var onExitParallax = function(element) {
-    $(element).removeClass('in-viewport');
+  var onExitParallax = function(obj) {
+    $(obj.element).removeClass('in-viewport');
   };
 
-  var onEnterParallax = function(element) {
-    $(element).addClass('in-viewport');
+  var onEnterParallax = function(obj) {
+    $(obj.element).addClass('in-viewport');
   };
 
 

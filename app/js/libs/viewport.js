@@ -1,9 +1,7 @@
 // viewport - utilities for working within the browser's viewport
 // https://github.com/markfinger/viewport
 
-define([
-  'jquery'
-], function viewport($) {
+define([], function viewport() {
 
   var settings = {
     // A positive number lowers the top of the viewport,
@@ -20,15 +18,6 @@ define([
     // scope of the viewport.
 
     _.extend(settings, viewportSettings);
-  };
-
-  var _wrapElement = function(element) {
-    // Wrap the element in jQuery, if necessary
-
-    if (!element.jquery) {
-      element = $(element);
-    }
-    return element;
   };
 
   var getScrollY = function() {
@@ -52,57 +41,35 @@ define([
     return height;
   };
 
-  var getOffset = function(element) {
-    // Returns a superset of jQuery(element).offset
-
-    element = _wrapElement(element);
-
-    var offset = element.offset();
-
-    if (settings.topOffset) {
-      offset.top -= settings.topOffset;
-    }
-
-    offset.bottom = offset.top + element.outerHeight();
-    offset.right = offset.left + element.outerWidth();
-
-    return offset;
-  };
-
-  var getPositionOf = function(element, precomputed) {
+  var getPositionOf = function(element) {
     // Returns an object containing details about the position
     // of `element` relative to the viewport
 
-    element = _wrapElement(element);
-
-    precomputed = precomputed || {};
-    var scrollY = precomputed.scrollY || getScrollY();
-    var viewportHeight = precomputed.viewportHeight || getHeight();
-    var offset = precomputed.offset || getOffset(element);
-
-    var viewportTop = scrollY;
-    var viewportBottom = scrollY + viewportHeight;
-    var elementTop = offset.top;
-    var elementBottom = offset.bottom;
-
-    var topAboveViewportTop = elementTop < viewportTop;
-    var topBelowViewportTop = elementTop >= viewportTop;
-
-    var topAboveViewportBottom = elementTop < viewportBottom;
-    var topBelowViewportBottom = elementTop >= viewportBottom;
-
-    var bottomAboveViewportTop = elementBottom < viewportTop;
-    var bottomBelowViewportTop = elementBottom >= viewportTop;
-
-    var bottomAboveViewportBottom = elementBottom < viewportBottom;
-    var bottomBelowViewportBottom = elementBottom >= viewportBottom;
-
-    var distanceFromViewport = 0;
-    if (bottomAboveViewportTop) {
-      distanceFromViewport = Math.abs(elementBottom - viewportTop);
-    } else if (topBelowViewportBottom) {
-      distanceFromViewport = Math.abs(elementTop - viewportBottom);
+    if (element.jquery) {
+      element = element.get(0);
     }
+
+    var viewportHeight = getHeight();
+    var boundingRect = element.getBoundingClientRect();
+
+    var boundingRectTop = boundingRect.top;
+    var boundingRectBottom = boundingRect.bottom;
+    if (settings.topOffset) {
+      boundingRectTop -= settings.topOffset;
+      boundingRectBottom -= settings.bottomOffset;
+    }
+
+    var topAboveViewportTop = boundingRectTop < 0;
+    var topBelowViewportTop = !topAboveViewportTop;
+
+    var topAboveViewportBottom = boundingRectTop <= viewportHeight;
+    var topBelowViewportBottom = !topAboveViewportBottom;
+
+    var bottomAboveViewportTop = boundingRectBottom < 0;
+    var bottomBelowViewportTop = !bottomAboveViewportTop;
+
+    var bottomAboveViewportBottom = boundingRectBottom <= viewportHeight;
+    var bottomBelowViewportBottom = !bottomAboveViewportBottom;
 
     return {
       inside: !(topBelowViewportBottom || bottomAboveViewportTop),
@@ -111,9 +78,7 @@ define([
       below: topBelowViewportBottom,
       contained: topBelowViewportTop && bottomAboveViewportBottom,
       intersectsTop: topAboveViewportTop && bottomBelowViewportTop,
-      intersectsBottom: topAboveViewportBottom && bottomBelowViewportBottom,
-      distanceFromViewport: distanceFromViewport,
-      offsetTopFromViewport: elementTop - viewportTop
+      intersectsBottom: topAboveViewportBottom && bottomBelowViewportBottom
     };
   };
 
@@ -121,7 +86,6 @@ define([
     getPositionOf: getPositionOf,
     setViewport: setViewport,
     getScrollY: getScrollY,
-    getHeight: getHeight,
-    getOffset: getOffset
+    getHeight: getHeight
   };
 });
