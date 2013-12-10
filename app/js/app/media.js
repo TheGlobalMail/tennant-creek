@@ -6,18 +6,37 @@ define([
   'viewport'
 ], function($, _, scroll, events, viewport) {
 
+  var mediaElements;
   var slideContainers;
   var autoplayMedia;
   var videoContainers;
   var parallaxBackgrounds;
 
-  var jsCanPlayVideo = (function() {
+  // If JS can control the initial play of media elements. This is
+  // likely to be `true` on desktop and `false` on mobile devices.
+  var jsCanAutoplayMedia = (function() {
     var video = document.createElement('video');
     video.play();
     return !video.paused;
   })();
 
+  var updateMediaSources = function(element) {
+    var sources = $(element).find('source');
+    if (sources.is('[data-src]')) {
+      sources.each(function() {
+        var source = $(this);
+        source
+          .attr('src', source.data('src'))
+          .removeAttr('data-src');
+      });
+    }
+  };
+
   var playMedia = function(element, container) {
+    // TODO: use a predictive method to precache vids
+    if (element.readyState !== 4) {
+      element.load();
+    }
     element.play();
     if (element.paused !== true) {
       container.addClass('playing');
@@ -29,7 +48,6 @@ define([
 
   var pauseMedia = function(element, container) {
     element.pause();
-    // element.currentTime = 0;
     container.removeClass('playing');
   };
 
@@ -57,6 +75,11 @@ define([
     };
 
     progressUpdater();
+
+    // Ensure that the progress bar hits 100% on completion of the media
+    $(element).on('ended', function() {
+      progress.css('width', '100%');
+    });
   };
 
   // TODO: fade in/out
@@ -65,10 +88,10 @@ define([
       var container = $(element);
       var media = container.find('video, audio')[0];
       var controls = container.find('.controls');
-      var hasPlayed = false;
       var progressBar = container.find('.progress-bar');
+      var hasPlayed = false;
 
-      if (jsCanPlayVideo) {
+      if (jsCanAutoplayMedia) {
         scroll.track(container, {
           contained: function() {
             if (media.paused && !hasPlayed) {
@@ -126,7 +149,12 @@ define([
         }
       });
     });
-  }
+  };
+
+
+  var onEnterSlideContainer = function(obj) {
+    $(obj.element).addClass('in-viewport');
+  };
 
   var initMedia = function() {
     _.each(autoplayMedia, function(element) {
@@ -141,28 +169,16 @@ define([
           '<i class="stop icon icon-pause"></i>' +
         '</div>' +
         '<div class="progress-bar">' +
-          '<div class="progress" style="width: 60%;"></div>' +
+          '<div class="progress" style="width: 0;"></div>' +
         '</div>'
       ).appendTo(container);
-    })
+    });
+    _.each(mediaElements, updateMediaSources);
   };
-
-  var onEnterSlideContainer = function(element) {
-    $(element).addClass('in-viewport');
-  };
-
-  var onExitParallax = function(element) {
-    $(element).removeClass('in-viewport');
-  };
-
-  var onEnterParallax = function(element) {
-    $(element).addClass('in-viewport');
-  };
-
 
   var setBindings = function() {
     bindAutoplayMedia();
-    bindParallax();
+//    bindParallax();
 
     _.each(slideContainers, function(element) {
       scroll.track(element, {
@@ -173,6 +189,7 @@ define([
   };
 
   var init = function() {
+    mediaElements = $('video, audio');
     slideContainers = $('.slide-container');
     autoplayMedia = $('.autoplay-when-visible');
     videoContainers = $('.video-container');
