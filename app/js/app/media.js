@@ -102,6 +102,32 @@ define([
     });
   };
 
+  var bindParallax = function() {
+    _.each(parallaxBackgrounds, function(element) {
+      var container = $(element);
+      var bgPercentage;
+      var boundingRect;
+      var viewportAndRect;
+      var parallaxMultiplier = 0.3;
+      var multiplierOffset = (1 - parallaxMultiplier) / 4 * 100;
+
+      scroll.track(container, {
+        enter: function () {
+          container.addClass('in-viewport');
+        },
+        inside: function() {
+          boundingRect = container[0].getBoundingClientRect()
+          viewportAndRect = window.innerHeight + boundingRect.height;
+          bgPercentage = ( boundingRect.bottom / viewportAndRect * 100 ) * parallaxMultiplier + multiplierOffset + '%';
+          container.css('background-position-y', bgPercentage);
+        },
+        exit: function() {
+          container.removeClass('in-viewport');
+        }
+      });
+    });
+  }
+
   var initMedia = function() {
     _.each(autoplayMedia, function(element) {
       var container = $(element);
@@ -136,6 +162,7 @@ define([
 
   var setBindings = function() {
     bindAutoplayMedia();
+    bindParallax();
 
     _.each(slideContainers, function(element) {
       scroll.track(element, {
@@ -143,12 +170,6 @@ define([
       });
     });
 
-    _.each(parallaxBackgrounds, function(element) {
-      scroll.track(element, {
-        enter:  onEnterParallax,
-        exit:   onExitParallax
-      });
-    });
   };
 
   var init = function() {
