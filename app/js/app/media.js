@@ -11,7 +11,9 @@ define([
   var videoContainers;
   var parallaxBackgrounds;
 
-  var jsCanPlayVideo = (function() {
+  // If JS can control the initial play of media elements. This is
+  // likely to be `true` on desktop and `false` on mobile devices.
+  var jsCanAutoplayMedia = (function() {
     var video = document.createElement('video');
     video.play();
     return !video.paused;
@@ -68,7 +70,7 @@ define([
       var hasPlayed = false;
       var progressBar = container.find('.progress-bar');
 
-      if (jsCanPlayVideo) {
+      if (jsCanAutoplayMedia) {
         scroll.track(container, {
           contained: function() {
             if (media.paused && !hasPlayed) {
