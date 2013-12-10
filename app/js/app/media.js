@@ -6,6 +6,7 @@ define([
   'viewport'
 ], function($, _, scroll, events, viewport) {
 
+  var mediaElements;
   var slideContainers;
   var autoplayMedia;
   var videoContainers;
@@ -19,7 +20,21 @@ define([
     return !video.paused;
   })();
 
+  var updateMediaSources = function(element) {
+    var sources = $(element).find('source');
+    if (sources.is('[data-src]')) {
+      sources.each(function() {
+        var source = $(this);
+        source
+          .attr('src', source.data('src'))
+          .removeAttr('data-src');
+      });
+    }
+  };
+
   var playMedia = function(element, container) {
+    // TODO: use a predictive method to precache vids
+    element.load();
     element.play();
     if (element.paused !== true) {
       container.addClass('playing');
@@ -31,7 +46,6 @@ define([
 
   var pauseMedia = function(element, container) {
     element.pause();
-    // element.currentTime = 0;
     container.removeClass('playing');
   };
 
@@ -59,6 +73,11 @@ define([
     };
 
     progressUpdater();
+
+    // Ensure that the progress bar hits 100% on completion of the media
+    $(element).on('ended', function() {
+      progress.css('width', '100%');
+    });
   };
 
   // TODO: fade in/out
@@ -67,8 +86,8 @@ define([
       var container = $(element);
       var media = container.find('video, audio')[0];
       var controls = container.find('.controls');
-      var hasPlayed = false;
       var progressBar = container.find('.progress-bar');
+      var hasPlayed = false;
 
       if (jsCanAutoplayMedia) {
         scroll.track(container, {
@@ -121,16 +140,19 @@ define([
           boundingRect = container[0].getBoundingClientRect()
           viewportAndRect = window.innerHeight + boundingRect.height;
           bgPercentage = ( boundingRect.bottom / viewportAndRect * 100 ) * parallaxMultiplier + multiplierOffset + '%';
-          requestAnimationFrame(function() {
-            container.css('background-position-y', bgPercentage);
-          });
+          container.css('background-position-y', bgPercentage);
         },
         exit: function() {
           container.removeClass('in-viewport');
         }
       });
     });
-  }
+  };
+
+
+  var onEnterSlideContainer = function(obj) {
+    $(obj.element).addClass('in-viewport');
+  };
 
   var initMedia = function() {
     _.each(autoplayMedia, function(element) {
@@ -148,21 +170,9 @@ define([
           '<div class="progress" style="width: 0;"></div>' +
         '</div>'
       ).appendTo(container);
-    })
+    });
+    _.each(mediaElements, updateMediaSources);
   };
-
-  var onEnterSlideContainer = function(obj) {
-    $(obj.element).addClass('in-viewport');
-  };
-
-  var onExitParallax = function(obj) {
-    $(obj.element).removeClass('in-viewport');
-  };
-
-  var onEnterParallax = function(obj) {
-    $(obj.element).addClass('in-viewport');
-  };
-
 
   var setBindings = function() {
     bindAutoplayMedia();
@@ -177,6 +187,7 @@ define([
   };
 
   var init = function() {
+    mediaElements = $('video, audio');
     slideContainers = $('.slide-container');
     autoplayMedia = $('.autoplay-when-visible');
     videoContainers = $('.video-container');
