@@ -34,7 +34,9 @@ define([
 
   var playMedia = function(element, container) {
     // TODO: use a predictive method to precache vids
-    element.load();
+    if (element.readyState !== 4) {
+      element.load();
+    }
     element.play();
     if (element.paused !== true) {
       container.addClass('playing');
