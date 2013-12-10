@@ -29,7 +29,7 @@ define([
 
   var pauseMedia = function(element, container) {
     element.pause();
-    element.currentTime = 0;
+    // element.currentTime = 0;
     container.removeClass('playing');
   };
 
@@ -138,7 +138,7 @@ define([
       $(
         '<div class="controls">' +
           '<i class="play icon ' + playIcon + '"></i>' +
-          '<i class="stop icon icon-stop"></i>' +
+          '<i class="stop icon icon-pause"></i>' +
         '</div>' +
         '<div class="progress-bar">' +
           '<div class="progress" style="width: 60%;"></div>' +

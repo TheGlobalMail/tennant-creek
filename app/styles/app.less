@@ -106,7 +106,7 @@ article {
   margin-bottom: 30px;
   .slide {
     color: #fff;
-    text-shadow: 0 0 5px #000;
+    text-shadow: 0 1px 3px #000;
     &:nth-child(1) {
       background-image: url('/assets/images/kid-car-jump-cover.jpg');
 
@@ -131,7 +131,7 @@ article {
           .char { opacity: 0.5; }
           &:nth-child(3), &:nth-child(6) { opacity: 1; font-family: "alternate-gothic-no-1-d", sans-serif; }
           &:nth-child(3) .char { padding: 0 0.5em; opacity: 1; }
-          &:nth-child(6) .char { letter-spacing: -0.06em; opacity: 1; }
+          &:nth-child(6) .char { letter-spacing: -0.02em; opacity: 1; }
         }
       }
 
@@ -207,7 +207,7 @@ article {
   line-height: 1.1;
   text-align: center;
   color: #fff;
-  text-shadow: 0 0 5px #000;
+  text-shadow: 0 1px 3px #000;
   padding: 0;
 }
 
@@ -380,8 +380,8 @@ video {
 
 .controls {
   position: absolute;
-  left: 10px;
-  bottom: 10px;
+  left: 15px;
+  bottom: 15px;
   cursor: pointer;
   opacity: 1;
   transition: opacity 0.5s;
@@ -389,15 +389,16 @@ video {
     margin: 0 0 0 50px;
   }
   .icon {
-    font-size: 40px;
+    font-size: 30px;
     color: white;
+    text-shadow: 0 1px 3px #000;
   }
   .stop {
     display: none;
   }
   .playing & {
-    opacity: 0.15;
-    transition: opacity 5s;
+    opacity: 0.4;
+    transition: opacity 3s;
     .stop {
       display: block;
     }
@@ -412,24 +413,30 @@ video {
 }
 
 .progress-bar {
+  @progressBarHeight: 6px;
   position: absolute;
   left: 0;
-  bottom: -4px;
-  height: 4px;
+  bottom: 0;
+  height: @progressBarHeight;
   width: 100%;
-  background: #bbb;
-  opacity: 0;
+  background: transparent;
+  // background: #fff;
+  // opacity: 0.3;
   transition: opacity 0.5s;
-  .playing &,
-  .played & {
-    opacity: 1;
-  }
+  // box-shadow: 0 0 3px #000;
+  // .playing &,
+  // .played & {
+  //   opacity: 1;
+  // }
   .progress {
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
-    background: #999;
+    background: #fff;
+    opacity: 0.4;
+    box-shadow: 0 -1px 3px #000;
+
     transition: width: 0.01s;
   }
 }
