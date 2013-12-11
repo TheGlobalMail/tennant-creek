@@ -6,8 +6,9 @@ define([
   'viewport',
   './layout',
   './media',
-  './analytics'
-], function($, _, events, scroll, viewport, layout, media, analytics) {
+  './analytics',
+  './slides'
+], function($, _, events, scroll, viewport, layout, media, analytics, slides) {
   'use strict';
 
   var body;
@@ -41,6 +42,7 @@ define([
     analytics.init();
     layout.init();
     media.init();
+    slides.init();
     scroll.init();
   };
 

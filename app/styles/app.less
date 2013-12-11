@@ -107,9 +107,7 @@ article {
   .slide {
     color: #fff;
     text-shadow: 0 1px 3px #000;
-    &:nth-child(1) {
-      background-image: url('/assets/images/kid-car-jump-cover.jpg');
-
+    &:first-child {
       .headline {
         text-align: center;
         font-size: 3em;
@@ -134,7 +132,6 @@ article {
           &:nth-child(6) .char { letter-spacing: -0.02em; opacity: 1; }
         }
       }
-
       .subhead {
         text-align: center;
         font-family: "alternate-gothic-no-3-d", sans-serif;
@@ -154,7 +151,6 @@ article {
           content: '';
         }
       }
-
       .byline {
         text-transform: uppercase;
         font-size: 0.7em;
@@ -163,53 +159,54 @@ article {
         opacity: 0.6;
       } 
     }
-    &:nth-child(2) {
-      .text-container {
-        position: relative;
-      }
-    }
-    &:nth-child(3) {
-      background-image: url('/assets/images/waitcoat-kids-sunset-MPB20504a.jpg');
-    }
   }
 }
 
 .slide-container {
-  .slide {
+  .background {
     background-size: cover;
     background-repeat: no-repeat;
   }
+  
+  &.intro {
+    .slide {
+      &:nth-child(1) .background { background-image: url('/assets/images/kid-car-jump-cover.jpg'); }
+      &:nth-child(2) .background { /* video */ }
+      &:nth-child(3) .background { background-image: url('/assets/images/waitcoat-kids-sunset-MPB20504a.jpg'); }
+    }
+  }
+
   &.olive-house {
     .slide {
-      &:nth-child(1) { background-image: url('/assets/images/olive-yard-MPB29990.jpg'); }
-      &:nth-child(2) { background-image: url('/assets/images/olive-MPB20030.jpg'); }
-      &:nth-child(3) { background-image: url('/assets/images/olive-house-MPB20048.jpg'); }
+      &:nth-child(1) .background { background-image: url('/assets/images/olive-yard-MPB29990.jpg'); }
+      &:nth-child(2) .background { background-image: url('/assets/images/olive-MPB20030.jpg'); }
+      &:nth-child(3) .background { background-image: url('/assets/images/olive-house-MPB20048.jpg'); }
     }
   }
 
   &.bitumen-dust {
     .slide {
-      &:nth-child(1) { background-image: url('/assets/images/red-rock-hill-MPB29216.jpg'); }
-      &:nth-child(2) { background-image: url('/assets/images/bitumen-meets-dust-MPB20686.jpg'); }
-      &:nth-child(3) { /* video */ }
+      &:nth-child(1) .background { background-image: url('/assets/images/red-rock-hill-MPB29216.jpg'); }
+      &:nth-child(2) .background { background-image: url('/assets/images/bitumen-meets-dust-MPB20686.jpg'); }
+      &:nth-child(3) .background { /* video */ }
     }
   }
 
   &.el-dorado-corned-beef {
     .slide {
-      &:nth-child(1) { /* video */ }
-      &:nth-child(2) { background-image: url('/assets/images/corned-beef-camp-1-MPB20259a.jpg'); }
-      &:nth-child(3) { background-image: url('/assets/images/corned-beef-camp-2-MPB29792a.jpg'); }
-      &:nth-child(4) { background-image: url('/assets/images/corned-beef-camp-3-MPB29252.jpg'); }
+      &:nth-child(1) .background { /* video */ }
+      &:nth-child(2) .background { background-image: url('/assets/images/corned-beef-camp-1-MPB20259a.jpg'); }
+      &:nth-child(3) .background { background-image: url('/assets/images/corned-beef-camp-2-MPB29792a.jpg'); }
+      &:nth-child(4) .background { background-image: url('/assets/images/corned-beef-camp-3-MPB29252.jpg'); }
     }
   }
 
   &.dianne-stokes {
     .slide {
-      &:nth-child(1) { /* video */ }
-      &:nth-child(2) { background-image: url('/assets/images/dianne-stokes-portrait-MPB20293.jpg'); }
-      &:nth-child(3) { background-image: url('/assets/images/dianne-women-night-sky-MPB20610.jpg'); }
-      &:nth-child(4) { background-image: url('/assets/images/night_panorama1.jpg'); }
+      &:nth-child(1) .background { /* video */ }
+      &:nth-child(2) .background { background-image: url('/assets/images/dianne-stokes-portrait-MPB20293.jpg'); }
+      &:nth-child(3) .background { background-image: url('/assets/images/dianne-women-night-sky-MPB20610.jpg'); }
+      &:nth-child(4) .background { background-image: url('/assets/images/night_panorama1.jpg'); }
     }
   }
 

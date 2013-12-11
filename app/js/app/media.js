@@ -32,9 +32,10 @@ define([
     }
 
     if (element.currentTime > 0) {
-      // Skip any rough peaks in the current position,
-      // but otherwise resume in place
-      mediaUtils.fadeIn(element, {fadeDuration: 100});
+      // Avoid clipping, but try to resume in place
+      mediaUtils.fadeIn(element, {
+        duration: 100
+      });
     } else {
       mediaUtils.fadeIn(element);
     }
@@ -88,7 +89,6 @@ define([
     });
   };
 
-  // TODO: fade in/out
   var bindAutoplayMedia = function() {
     _.each(autoplayMedia, function(element) {
       var container = $(element);
@@ -131,12 +131,7 @@ define([
     });
   };
 
-  var onEnterSlideContainer = function(obj) {
-    $(obj.element).addClass('in-viewport');
-  };
-
-  var initMedia = function() {
-    updateMediaSources();
+  var addMediaControls = function() {
     _.each(autoplayMedia, function(element) {
       var container = $(element);
       var playIcon = 'icon-play';
@@ -157,22 +152,15 @@ define([
 
   var setBindings = function() {
     bindAutoplayMedia();
-
-    _.each(slideContainers, function(element) {
-      scroll.track(element, {
-        enter: onEnterSlideContainer
-      });
-    });
-
   };
 
   var init = function() {
-    slideContainers = $('.slide-container');
     autoplayMedia = $('.autoplay-when-visible');
     videoContainers = $('.video-container');
     parallaxBackgrounds = $('.text-over-bg-image');
 
-    initMedia();
+    updateMediaSources();
+    addMediaControls();
     setBindings();
     events.trigger('media:ready');
   };

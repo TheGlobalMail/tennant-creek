@@ -6,8 +6,8 @@ define([], function() {
   };
 
   var defaultOptions = {
-    fadeDuration: 750,
-    fadeStepDelay: 20,
+    duration: 500,
+    stepDelay: 20,
     volumeMax: 1,
     volumeMin: 0
   };
@@ -16,7 +16,7 @@ define([], function() {
     if (!options) {
       options = defaultOptions;
     }
-    return options.fadeStepDelay / options.fadeDuration;
+    return options.stepDelay / options.duration;
   };
 
   // TODO: add support for options arguments
@@ -43,7 +43,7 @@ define([], function() {
         sound.volume = Math.min(options.volumeMax, vol + stepAmount);
         sound.timer = setTimeout(function() {
           _fadeIn(sound, options);
-        }, options.fadeStepDelay);
+        }, options.stepDelay);
       } else {
         delete sound.__mediaUtilsState__;
       }
@@ -69,7 +69,7 @@ define([], function() {
         sound.volume = Math.max(options.volumeMin, vol - stepAmount);
         sound.timer = setTimeout(function() {
           _fadeOut(sound, options);
-        }, options.fadeStepDelay);
+        }, options.stepDelay);
       } else {
         sound.pause();
         delete sound.__mediaUtilsState__;
