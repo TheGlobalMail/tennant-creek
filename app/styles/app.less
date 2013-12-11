@@ -4,7 +4,7 @@
 
 // not sure if this is a terrible idea or not
 // apparently it crashes IE6 though, so that's a plus
-* { position: relative; }
+* { position: relative; box-sizing: border-box; }
 
 .navbar {
   margin: 0;
@@ -16,15 +16,18 @@
     padding: 8px 0;
     z-index: 100;
     border-bottom: 1px solid rgba(255,255,255,.05);
+    box-sizing: content-box; 
     .brand {
       background-size: auto;
     }
   }
 }
 
-body {
-  font-size: 20px;
+html,body {
+    height:100%;
 }
+
+body { font-size: 20px; }
 
 a {
   color: #777;
@@ -34,9 +37,10 @@ a {
   }
 }
 
-img {
-  max-width: 100%;
-}
+img { max-width: 100%; }
+
+@textWidth: 660px; // used in main text layout
+@highlightColor: #61778e; // placeholder at the mo?
 
 // Reused Mixins
 .animation (...) {
@@ -54,17 +58,11 @@ img {
 }
 
 .rotation-frames() {
-  0% {
-    .transform(rotate(0deg));
-  }
-  100% {
-    .transform(rotate(-360deg));
-  }
+  0%   { .transform(rotate(0deg)); }
+  100% { .transform(rotate(-360deg)); }
 }
 
-.pre-load-background {
-  display: none;
-}
+.pre-load-background { display: none; }
 
 body.loading {
   height: 100%;
@@ -214,31 +212,35 @@ article {
 
 // coupla mixins for this project. TODO: rationalise these
 
-.bigwhitecondensed(@maxWidth: 420px) {
+.bigwhitecondensed(@maxWidth: 420px, @color: #fff, @shadow: #000, @fontSize: 1.7em) {
   max-width: @maxWidth;
   margin-left: auto;
   margin-right: auto;
   font-family: "alternate-gothic-no-3-d", sans-serif;
-  font-size: 1.7em;
+  font-size: @fontSize;
   line-height: 1.1;
   text-align: center;
-  color: #fff;
-  text-shadow: 0 1px 3px #000;
+  color: @color;
+  text-shadow: 0 1px 3px @shadow;
   padding: 0;
 }
 
-.topBottomBorder() {  
+.topBottomBorder(@color: #fff, @shadow: #000) {  
+  @borderHeight: 6px;
   &:before, &:after {
     width: 100%;
-    height: 3px;
-    margin: 10px 0 10px 0;
+    height: @borderHeight;
+    margin: 0;
     opacity: 0.4;
-    background: #fff;
+    background: @color;
     border-radius: 10px;
-    box-shadow: 0 0 3px #000;
+    box-shadow: 0 0 3px @shadow;
     display: block;
     content: '';
+    position: absolute;
   }
+  &:before { top: 0; }
+  &:after  { bottom: 0; }
 }
 
 .vignette(@vignetteSize: 50px) {
@@ -279,6 +281,8 @@ article {
     .text {
       .bigwhitecondensed();
       .topBottomBorder();
+      padding: 10px 0;
+      box-sizing: content-box; 
     }
   }
   .background {
@@ -302,7 +306,7 @@ article {
 .article-section {
   position: relative;
   > p {
-    max-width: 660px;
+    max-width: @textWidth;
     margin-left: auto;
     margin-right: auto;
     font-family: @serifFontFamily;
@@ -321,7 +325,7 @@ article {
       line-height: 1.1;
       font-size: 1.7em; 
       font-family: "alternate-gothic-no-3-d", sans-serif;
-      color: #61778e;
+      color: @highlightColor;
       text-align: center;
       &:first-letter {
         // drop cap styling goes here
@@ -353,6 +357,54 @@ article {
     .topBottomBorder();
     position: absolute;
   }
+}
+
+.quote-with-portrait {
+  .clearfix;
+  max-width: @textWidth * 2;
+  margin: 2em auto;
+  padding: 0 1em;
+  float: none;
+  box-sizing: content-box;
+    position: relative;
+
+  .quote-rules {
+    width: 30%;
+    height: 100%;
+    position: absolute;
+    .topBottomBorder(@highlightColor, #666);
+  }
+
+  .quote-wrapper {
+    display: table;
+    width: 100%;
+    height: 100%;
+  }
+  .quote-text {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    .bigwhitecondensed(100%, @highlightColor, #666, 2.4em);
+  }
+
+  .portrait {
+    width: 65%;
+    box-sizing: content-box;
+    background: magenta; 
+    margin: 0;
+    img {
+      border-radius: 3px;
+    }
+  }
+  &.portrait-left {
+    .quote-rules { right: 2%; }
+    .portrait { float: left; }
+  }
+  &.portrait-right {
+    .quote-rules { left: 2%; }
+    .portrait { float: right; }
+  }
+
 }
 
 .article-footer {
@@ -451,6 +503,7 @@ video {
     height: 100%;
     background: #fff;
     opacity: 0.4;
+    border-radius: 10px;
     box-shadow: 0 -1px 3px #000;
     transition: width: 0.01s;
     width: 0;
