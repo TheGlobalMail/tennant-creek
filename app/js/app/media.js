@@ -3,33 +3,26 @@ define([
   'lodash',
   'scroll',
   'events',
-  'viewport'
-], function($, _, scroll, events, viewport) {
+  'viewport',
+  'settings',
+  'mediaUtils'
+], function($, _, scroll, events, viewport, settings, mediaUtils) {
 
-  var mediaElements;
   var slideContainers;
   var autoplayMedia;
   var videoContainers;
   var parallaxBackgrounds;
 
-  // If JS can control the initial play of media elements. This is
-  // likely to be `true` on desktop and `false` on mobile devices.
-  var jsCanAutoplayMedia = (function() {
-    var video = document.createElement('video');
-    video.play();
-    return !video.paused;
-  })();
-
-  var updateMediaSources = function(element) {
-    var sources = $(element).find('source');
-    if (sources.is('[data-src]')) {
-      sources.each(function() {
-        var source = $(this);
-        source
-          .attr('src', source.data('src'))
-          .removeAttr('data-src');
-      });
-    }
+  var updateMediaSources = function() {
+    // Rename `data-src` attributes to `src`.
+    // `data-src` is used to prevent the browser from caching
+    // excessive amounts of media assets
+    $('source[data-src]').each(function() {
+      var source = $(this);
+      source
+        .attr('src', source.data('src'))
+        .removeAttr('data-src');
+    });
   };
 
   var playMedia = function(element, container) {
@@ -37,13 +30,26 @@ define([
     if (element.readyState !== 4) {
       element.load();
     }
-    element.play();
+
+    if (element.currentTime > 0) {
+      // Skip any rough peaks in the current position,
+      // but otherwise resume in place
+      mediaUtils.fadeIn(element, {fadeDuration: 100});
+    } else {
+      mediaUtils.fadeIn(element);
+    }
+
     if (element.paused !== true) {
       container.addClass('playing');
     }
     if (!container.hasClass('played')) {
       container.addClass('played')
     }
+  };
+
+  var fadeOutMedia = function(element, container) {
+    mediaUtils.fadeOut(element);
+    container.removeClass('playing');
   };
 
   var pauseMedia = function(element, container) {
@@ -91,7 +97,7 @@ define([
       var progressBar = container.find('.progress-bar');
       var hasPlayed = false;
 
-      if (jsCanAutoplayMedia) {
+      if (settings.jsCanAutoplayMedia) {
         scroll.track(container, {
           contained: function() {
             if (media.paused && !hasPlayed) {
@@ -100,7 +106,7 @@ define([
             }
           },
           exit: function() {
-            pauseMedia(media, container);
+            fadeOutMedia(media, container);
             hasPlayed = false;
           }
         });
@@ -125,38 +131,12 @@ define([
     });
   };
 
-  var bindParallax = function() {
-    _.each(parallaxBackgrounds, function(element) {
-      var container = $(element);
-      var bgPercentage;
-      var boundingRect;
-      var viewportAndRect;
-      var parallaxMultiplier = 0.3;
-      var multiplierOffset = (1 - parallaxMultiplier) / 4 * 100;
-
-      scroll.track(container, {
-        enter: function () {
-          container.addClass('in-viewport');
-        },
-        inside: function() {
-          boundingRect = container[0].getBoundingClientRect()
-          viewportAndRect = window.innerHeight + boundingRect.height;
-          bgPercentage = ( boundingRect.bottom / viewportAndRect * 100 ) * parallaxMultiplier + multiplierOffset + '%';
-          container.css('background-position-y', bgPercentage);
-        },
-        exit: function() {
-          container.removeClass('in-viewport');
-        }
-      });
-    });
-  };
-
-
   var onEnterSlideContainer = function(obj) {
     $(obj.element).addClass('in-viewport');
   };
 
   var initMedia = function() {
+    updateMediaSources();
     _.each(autoplayMedia, function(element) {
       var container = $(element);
       var playIcon = 'icon-play';
@@ -169,16 +149,14 @@ define([
           '<i class="stop icon icon-pause"></i>' +
         '</div>' +
         '<div class="progress-bar">' +
-          '<div class="progress" style="width: 0;"></div>' +
+          '<div class="progress"></div>' +
         '</div>'
       ).appendTo(container);
     });
-    _.each(mediaElements, updateMediaSources);
   };
 
   var setBindings = function() {
     bindAutoplayMedia();
-//    bindParallax();
 
     _.each(slideContainers, function(element) {
       scroll.track(element, {
@@ -189,7 +167,6 @@ define([
   };
 
   var init = function() {
-    mediaElements = $('video, audio');
     slideContainers = $('.slide-container');
     autoplayMedia = $('.autoplay-when-visible');
     videoContainers = $('.video-container');

@@ -7,7 +7,8 @@ require.config({
     fatcontroller: './libs/fatcontroller',
     viewport: './libs/viewport',
     scroll: './libs/scroll',
-    scrollTo: '../components/jquery.scrollTo/jquery.scrollTo'
+    scrollTo: '../components/jquery.scrollTo/jquery.scrollTo',
+    mediaUtils: './libs/media-utils'
   },
   shim: {
     scrollTo: {

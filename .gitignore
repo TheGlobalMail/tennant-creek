@@ -5,3 +5,4 @@ app/components
 config.json
 npm-debug.log
 dist
+.idea
