@@ -76,8 +76,8 @@ body.loading {
     width: 100%;
     height: 100%;
     background: url('/images/loader.svg') center center no-repeat transparent;
-    background-size: 60px auto;
-    .animation(spin 2s infinite linear);
+    background-size: 25% auto;
+    .animation(spin 3s infinite linear);
     @-webkit-keyframes spin {.rotation-frames;}
     @-moz-keyframes spin {.rotation-frames}
     @-ms-keyframes spin {.rotation-frames}
@@ -161,6 +161,8 @@ article {
 }
 
 .slide-container {
+  background: black;
+
   .background {
     background-size: cover;
     background-repeat: no-repeat;
