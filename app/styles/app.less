@@ -101,6 +101,8 @@ article {
 }
 
 .article-header {
+  position: relative;
+  z-index: 2;
   margin-bottom: 30px;
   .slide {
     color: #fff;
@@ -162,7 +164,7 @@ article {
 
 .slide-container {
   background: black;
-
+  z-index: 0;
   .background {
     background-size: cover;
     background-repeat: no-repeat;
@@ -209,7 +211,6 @@ article {
       &:nth-child(4) .background { background-image: url('/assets/images/night_panorama1.jpg'); }
     }
   }
-
 }
 
 // coupla mixins for this project. TODO: rationalise these

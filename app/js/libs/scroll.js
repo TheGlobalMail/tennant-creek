@@ -6,7 +6,7 @@ define([
 
   var trackedElements = [];
 
-  var track = function(element, bindings) {
+  var on = function(element, bindings) {
     var obj = {
       element: element,
       bindings: bindings
@@ -15,6 +15,14 @@ define([
     trackedElements.push(obj);
 
     return obj;
+  };
+
+  var off = function(element) {
+    // TODO: this doesn't work as the jQuery objects aren't equal
+    // probably need to settle down on using unwrapped elements
+    trackedElements = trackedElements.filter(function(obj) {
+      return obj.element !== element;
+    });
   };
 
   var updateElements = function() {
@@ -61,7 +69,10 @@ define([
       });
 
       _.each(matchedBindings, function(binding) {
-        binding(position);
+        binding({
+          element: obj.element,
+          position: position
+        });
       });
     });
   };
@@ -69,11 +80,13 @@ define([
   var init = function() {
     updateElements();
     $(window).on('scroll.checkElements', _.throttle(checkElements, 75));
+    $(window).on('resize.updateElements', _.debounce(checkElements, 100));
   };
 
   return {
     init: init,
-    track: track,
+    on: on,
+    off: off,
     checkElements: checkElements,
     updateElements: updateElements
   };

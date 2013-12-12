@@ -98,7 +98,7 @@ define([
       var hasPlayed = false;
 
       if (settings.jsCanAutoplayMedia) {
-        scroll.track(container, {
+        scroll.on(container, {
           contained: function() {
             if (media.paused && !hasPlayed) {
               playMedia(media, container);
