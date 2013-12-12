@@ -4,28 +4,14 @@ define([
   'scroll',
   'events',
   'viewport'
-], function($, _, scroll, events, viewport) {
+], function($, _, scroll, events) {
 
   var slideContainers;
-  var navBar;
   var articleFooter;
   var fixedHeaderHeight;
 
   var sizeFooter = function() {
-    articleFooter.css('height', window.innerHeight);
-  };
-
-  var sizeSlideContainers = function() {
-    var slideHeight = window.innerHeight - fixedHeaderHeight;
-
-    slideContainers.each(function() {
-      var container = $(this);
-      var slides = container.find('.slide');
-
-      container.height(slideHeight * slides.length);
-      slides.height(slideHeight);
-      slides.find('.background').height(slideHeight);
-    });
+    articleFooter.css('height', window.innerHeight - fixedHeaderHeight);
   };
 
   var wordsInSpans = function() {
@@ -61,7 +47,6 @@ define([
 
     fixedHeaderHeight = $('.navbar').outerHeight();
 
-    sizeSlideContainers();
     wordsInSpans();
     // lettersInSpans();
     sizeFooter();

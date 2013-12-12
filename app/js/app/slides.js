@@ -10,6 +10,20 @@ define([
   var slidesText;
   var fixedHeaderHeight;
 
+  var sizeSlideContainers = function() {
+    var slideHeight = window.innerHeight - fixedHeaderHeight;
+
+    slideContainers.each(function() {
+      var container = $(this);
+      var slides = container.find('.slide');
+      var backgrounds = container.find('.background');
+
+      container.height(slideHeight * slides.length);
+      slides.height(slideHeight);
+      backgrounds.height(slideHeight)
+    });
+  };
+
   var addSlideBackgrounds = function() {
     // Add `.background` elements to slides without
     slides.not(':has(.background)').each(function() {
@@ -95,6 +109,7 @@ define([
     fixedHeaderHeight = $('.navbar').outerHeight();
 
     addSlideBackgrounds();
+    sizeSlideContainers();
     setBindings();
   };
 
