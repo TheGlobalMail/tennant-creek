@@ -68,7 +68,6 @@ img { max-width: 100%; }
   100%   { opacity: 0.2 }
 }
 
-
 .pre-load-background { display: none; }
 
 body.loading {
@@ -229,7 +228,7 @@ article {
 
 // coupla mixins for this project. TODO: rationalise these
 
-.bigwhitecondensed(@maxWidth: 420px, @color: #fff, @shadow: #000, @fontSize: 1.7em) {
+.bigCondensed(@maxWidth: 420px, @color: #fff, @shadow: #000, @fontSize: 1.7em) {
   max-width: @maxWidth;
   margin-left: auto;
   margin-right: auto;
@@ -296,7 +295,7 @@ article {
     height: 100%;
     z-index: 2;
     .text {
-      .bigwhitecondensed();
+      .bigCondensed();
       .topBottomBorder();
       padding: 10px 0;
       box-sizing: content-box; 
@@ -352,6 +351,28 @@ article {
       margin-bottom: 40px;
     }
   }
+  > blockquote {
+    p {
+      .bigCondensed((@textWidth * 1.4), @highlightColor, #ccc);
+    }
+  }
+
+  .related {
+    max-width: @textWidth;
+    padding: 0  1.5em 1em 1.5em; 
+    img {
+      border-radius: 4px;
+      box-shadow: 0 0 1px 1px #ccc;
+    }
+    &.full-width {
+      max-width: none;
+      width: 100%;
+      padding: 0 1.5em 1em 1.5em; 
+      img { width: 100%; }
+    }
+    &.pull-left { float: left; }
+    &.pull-right { float: right; }
+  }
 }
 
 .text-over-bg-image {
@@ -366,7 +387,7 @@ article {
   .vignette(40px);
   .text-and-bg-position-classes(@textWidth);
   .text {
-    .bigwhitecondensed(@textWidth);
+    .bigCondensed(@textWidth);
     .topBottomBorder();
     position: absolute;
   }
@@ -397,7 +418,7 @@ article {
     display: table-cell;
     text-align: center;
     vertical-align: middle;
-    .bigwhitecondensed(100%, @highlightColor, #666, 2.4em);
+    .bigCondensed(100%, @highlightColor, #666, 2.4em);
   }
 
   .portrait {
