@@ -9,23 +9,22 @@ define([
   var slideContainers;
   var navBar;
   var articleFooter;
+  var fixedHeaderHeight;
 
   var sizeFooter = function() {
     articleFooter.css('height', window.innerHeight);
   };
 
   var sizeSlideContainers = function() {
-    var navBarHeight = navBar.outerHeight();
+    var slideHeight = window.innerHeight - fixedHeaderHeight;
+
     slideContainers.each(function() {
       var container = $(this);
       var slides = container.find('.slide');
-      container.height((window.innerHeight - navBarHeight) * slides.length);
-      // Size the individual slides
-      _.each(slides, function(element) {
-        $(element).css({
-          height: window.innerHeight - navBarHeight
-        });
-      });
+
+      container.height(slideHeight * slides.length);
+      slides.height(slideHeight);
+      slides.find('.background').height(slideHeight);
     });
   };
 
@@ -58,8 +57,9 @@ define([
 
   var init = function() {
     slideContainers = $('.slide-container');
-    navBar = $('.navbar');
     articleFooter = $('.article-footer');
+
+    fixedHeaderHeight = $('.navbar').outerHeight();
 
     sizeSlideContainers();
     wordsInSpans();

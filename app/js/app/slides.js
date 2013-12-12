@@ -9,80 +9,6 @@ define([
   var slides;
   var slidesText;
   var fixedHeaderHeight;
-  var slideRatio = 410 / 960; // h / w
-
-//  var fixBackgrounds = function(backgrounds) {
-//    backgrounds.each(function() {
-//      var background = $(this);
-//      background.css({
-//        position: 'fixed',
-//        top: fixedHeaderHeight,
-//        height: background.outerHeight()
-//      })
-//    });
-//  };
-//
-//  var unfixBackgrounds = function(backgrounds) {
-//    backgrounds.each(function() {
-//      $(this).attr('style', null);
-//    });
-//  };
-//
-//  var getSlideContainersTracker = function(element) {
-//    var container = $(element);
-//    var containerOffset = container.offset();
-//    var slides = _.map(container.find('.slides'), function(element) {
-//      var slide = $(element);
-//      var text = slide.find('.text');
-//      return {
-//        text: text,
-//        textOffset: viewport.getOffset(text),
-//        background: slide.find('.background')
-//      }
-//    });
-//    var backgrounds = container.find('.background');
-//    var completelyWithin = false;
-//
-//    return function(obj) {
-//      var position = obj.position;
-//      if (position.intersectsTop && position.intersectsBottom) {
-//        if (!completelyWithin) {
-//          completelyWithin = true;
-//          container.addClass('completely-within');
-//          fixBackgrounds(backgrounds);
-//        }
-//      } else {
-//        if (completelyWithin) {
-//          completelyWithin = false;
-//          container.removeClass('completely-within');
-//          unfixBackgrounds(backgrounds)
-//        }
-//      }
-//
-//      // Handle slide transitions
-////      console.log(obj.position);
-//      _.each(slides, function(element) {
-//        var position = viewport.getPositionOf(element, {
-//          offset: viewport.getOffset(element),
-//          viewportHeight: position.precomputed.viewportHeight,
-//          scrollY: position.precomputed.scrollY
-//        });
-//        if (position.intersectsTop) {
-//
-//        }
-//      })
-//    };
-//  };
-
-//  var getSlideTracker = function(element) {
-//    var slide = $(element);
-//    var offset = viewport.getOffset(element);
-//    var viewport;
-//    return function(obj) {
-//      var position = obj.position;
-//      if (obj.position.offsetTopFromViewport)
-//    };
-//  };
 
   var addSlideBackgrounds = function() {
     // Add `.background` elements to slides without
@@ -90,10 +16,6 @@ define([
       $('<div class="background"></div>')
         .appendTo(this);
     });
-  };
-
-  var sizeBackgrounds = function() {
-
   };
 
   var setBindings = function() {
