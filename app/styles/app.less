@@ -59,8 +59,15 @@ img { max-width: 100%; }
 
 .rotation-frames() {
   0%   { .transform(rotate(0deg)); }
-  100% { .transform(rotate(-360deg)); }
+  100% { .transform(rotate(360deg)); }
 }
+
+.pulse() {
+  0%   { opacity: 0.2 }
+  50%  { opacity: 1 }
+  100%   { opacity: 0.2 }
+}
+
 
 .pre-load-background { display: none; }
 
@@ -77,12 +84,17 @@ body.loading {
     height: 100%;
     background: url('/images/loader.svg') center center no-repeat transparent;
     background-size: 25% auto;
-    .animation(spin 3s infinite linear);
+    .animation(~"spin 3s infinite linear, pulse 3s infinite ease-in-out");
     @-webkit-keyframes spin {.rotation-frames;}
     @-moz-keyframes spin {.rotation-frames}
     @-ms-keyframes spin {.rotation-frames}
     @-o-keyframes spin {.rotation-frames}
     @keyframes spin {.rotation-frames}
+    @-webkit-keyframes pulse {.pulse}
+    @-moz-keyframes pulse {.pulse}
+    @-ms-keyframes pulse {.pulse}
+    @-o-keyframes pulse {.pulse}
+    @keyframes pulse {.pulse}
     .pre-load {
       display: block;
     }
@@ -491,14 +503,11 @@ video {
   height: @progressBarHeight;
   width: 100%;
   background: transparent;
-  // background: #fff;
-  // opacity: 0.3;
   transition: opacity 0.5s;
-  // box-shadow: 0 0 3px #000;
-  // .playing &,
-  // .played & {
+  .playing &,
+  .played & {
   //   opacity: 1;
-  // }
+  }
   .progress {
     position: absolute;
     left: 0;
