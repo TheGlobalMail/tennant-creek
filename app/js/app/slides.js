@@ -108,7 +108,12 @@ define([
             !fixed
           ) {
             fixed = true;
-            slideContainer.find('.background').css('position', 'fixed');
+            slideContainer
+              .find('.background')
+                .css({
+                  position: 'fixed',
+                  top: fixedHeaderHeight
+                });
           } else if (
             !(position.intersectsTop && position.intersectsBottom) &&
             viewport.getScrollY() > 0 &&

@@ -178,8 +178,9 @@ article {
   background: black;
   z-index: 0;
   .background {
-    background-size: cover;
+    background-size: 100% auto;
     background-repeat: no-repeat;
+    background-position: center;
   }
   
   &.intro {
@@ -308,12 +309,12 @@ article {
     height: 100%;
     overflow: hidden;
     video {
-      width: auto;
-      min-width: 100%;
-      min-height: 100%;
       position: absolute;
       top: 0;
+      bottom: 0;
       left: 0;
+      right: 0;
+      margin: auto;
     }
   }
 }
