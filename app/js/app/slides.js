@@ -41,7 +41,12 @@ define([
             viewport.getScrollY() > 0 &&
             fixed
           ) {
-            slideContainer.find('.background').css('position', '');
+            slideContainer
+              .find('.background')
+                .css({
+                  position: '',
+                  top: ''
+                });
             fixed = false;
           }
         },
