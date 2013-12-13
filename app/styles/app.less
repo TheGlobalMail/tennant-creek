@@ -71,7 +71,6 @@ img { max-width: 100%; }
   100%   { opacity: 0.2 }
 }
 
-
 .pre-load-background { display: none; }
 
 body.loading {
@@ -142,10 +141,8 @@ article {
           display: inline-block;
           padding: 0 0.1em;
           margin: 0; 
-          .char { opacity: 0.5; }
-          &:nth-child(3), &:nth-child(6) { opacity: 1; font-family: "alternate-gothic-no-1-d", sans-serif; }
-          &:nth-child(3) .char { padding: 0 0.5em; opacity: 1; }
-          &:nth-child(6) .char { letter-spacing: -0.02em; opacity: 1; }
+          .char { opacity: 0.6; }
+          &:nth-child(2) .char { padding: 0 0.5em; opacity: 1; }
         }
       }
       .subhead {
@@ -232,7 +229,7 @@ article {
 
 // coupla mixins for this project. TODO: rationalise these
 
-.bigwhitecondensed(@maxWidth: 420px, @color: #fff, @shadow: #000, @fontSize: 1.7em) {
+.bigCondensed(@maxWidth: 420px, @color: #fff, @shadow: #000, @fontSize: 1.7em) {
   max-width: @maxWidth;
   margin-left: auto;
   margin-right: auto;
@@ -299,7 +296,8 @@ article {
     height: 100%;
     z-index: 2;
     .text {
-      .bigwhitecondensed();
+      .bigCondensed();
+      font-size: 2em; 
       .topBottomBorder();
       padding: 10px 0;
       box-sizing: content-box; 
@@ -358,6 +356,39 @@ article {
 
     }
   }
+  > blockquote {
+    p {
+      .bigCondensed((@textWidth * 1.4), @highlightColor, #ccc, 2em);
+    }
+  }
+
+  .related {
+    max-width: @textWidth * 0.75;
+    padding: 0  1.5em 1em 1.5em; 
+    box-sizing: content-box; 
+    img {
+      border-radius: 4px;
+      box-shadow: 0 0 1px 1px #ccc;
+    }
+    &.full-width {
+      max-width: none;
+      width: 97%;
+      padding: 0 1.5% 1em 1.5%; 
+      margin: 0 auto;
+      img { width: 100%; }
+    }
+    &.pull-left { float: left; }
+    &.pull-right { float: right; }
+    &.centered { margin: 0 auto; }
+    &.two-up {
+      .clearfix;
+      max-width: @textWidth * 2 + 40px;
+      margin: 0 auto;
+      .child { max-width: @textWidth; }
+      .left { float: left; }
+      .right { float: right; }
+    }
+  }
 }
 
 .text-over-bg-image {
@@ -372,7 +403,7 @@ article {
   .vignette(40px);
   .text-and-bg-position-classes(@textWidth);
   .text {
-    .bigwhitecondensed(@textWidth);
+    .bigCondensed(@textWidth);
     .topBottomBorder();
     position: absolute;
   }
@@ -403,7 +434,7 @@ article {
     display: table-cell;
     text-align: center;
     vertical-align: middle;
-    .bigwhitecondensed(100%, @highlightColor, #666, 2.4em);
+    .bigCondensed(100%, @highlightColor, #ccc, 2.2em);
   }
 
   .portrait {
