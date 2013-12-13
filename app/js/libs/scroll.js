@@ -79,8 +79,12 @@ define([
 
   var init = function() {
     updateElements();
+    checkElements();
     $(window).on('scroll.checkElements', _.throttle(checkElements, 75));
-    $(window).on('resize.updateElements', _.debounce(updateElements, 100));
+    $(window).on('resize.updateElements', _.debounce(function() {
+      updateElements();
+      checkElements();
+    }, 100));
   };
 
   return {

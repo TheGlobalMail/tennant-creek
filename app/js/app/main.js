@@ -15,7 +15,8 @@ define([
 
   var loadingStateUntil = [
     'layout:ready',
-    'media:ready'
+    'media:ready',
+    'main:ready'
   ];
 
   var loadingStageComplete = _.after(loadingStateUntil.length, function() {
@@ -44,6 +45,8 @@ define([
     media.init();
     slides.init();
     scroll.init();
+
+    events.trigger('main:ready');
   };
 
   return {

@@ -27,7 +27,10 @@ html,body {
     height:100%;
 }
 
-body { font-size: 20px; }
+body {
+  font-size: 20px;
+  color: initial;
+}
 
 a {
   color: #777;
@@ -106,6 +109,7 @@ body.loading {
 
 #main {
   margin-top: 49px;
+  transition: background-color 0.25s;
 }
 
 article {
@@ -176,7 +180,6 @@ article {
 
 .slide-container {
   position: relative;
-  background: black;
   z-index: 0;
   .background {
     background-size: 100% auto;
@@ -342,7 +345,7 @@ article {
       line-height: 1.1;
       font-size: 1.7em; 
       font-family: "alternate-gothic-no-3-d", sans-serif;
-      color: @highlightColor;
+//      color: @highlightColor;
       text-align: center;
       &:first-letter {
         // drop cap styling goes here
@@ -350,6 +353,9 @@ article {
     }
     &:last-child {
       margin-bottom: 40px;
+    }
+    &.drop-cap {
+
     }
   }
 }

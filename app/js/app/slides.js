@@ -36,32 +36,84 @@ define([
     slideContainers.each(function() {
       var slideContainer = $(this)
       var fixed = false;
+      var backgroundTinted = false;
+
+      var fixBG = function() {
+        fixed = true;
+        slideContainer
+          .find('.background')
+          .css({
+            position: 'fixed',
+            top: fixedHeaderHeight
+          });
+      };
+      var unfixBG = function() {
+        fixed = false;
+        slideContainer
+          .find('.background')
+          .css({
+            position: '',
+            top: ''
+          });
+      };
+
       scroll.on(this, {
+        enter: function() {
+          slideContainer.find('video, audio').each(function() {
+            if (this.readyState !== 4) {
+              this.load();
+            }
+          });
+        },
         inside: function(obj) {
           var position = obj.position;
           if (
             (position.intersectsTop && position.intersectsBottom) &&
             !fixed
           ) {
-            fixed = true;
-            slideContainer
-              .find('.background')
-                .css({
-                  position: 'fixed',
-                  top: fixedHeaderHeight
-                });
+            fixBG();
           } else if (
             !(position.intersectsTop && position.intersectsBottom) &&
             viewport.getScrollY() > 0 &&
             fixed
           ) {
-            slideContainer
-              .find('.background')
-                .css({
-                  position: '',
-                  top: ''
-                });
-            fixed = false;
+            unfixBG();
+          }
+          // Enter slideshow transition
+          if (
+            position.intersectsMiddle
+          ) {
+            backgroundTinted = true;
+            if (position.intersectsTop && position.intersectsBottom) {
+              $('#main').css('background-color', 'rgba(0,0,0,1)');
+            } else {
+              var top = 0;
+              var bottom;
+              var elementPosition;
+              var percentage;
+              if (position.intersectsTop) {
+                bottom = (position.viewportBottom - position.viewportMiddle) / 2;
+                elementPosition = position.elementBottom - position.viewportMiddle;
+              } else if (position.intersectsBottom) {
+                bottom = (position.viewportMiddle - position.viewportTop) / 2;
+                elementPosition = position.viewportMiddle - position.elementTop;
+              }
+              percentage = elementPosition / (bottom - top);
+              $('#main').css('background-color', 'rgba(0,0,0,' + percentage + ')');
+            }
+          } else {
+            backgroundTinted = false;
+            $('#main').css('background-color', '');
+          }
+        },
+        outside: function() {
+          // unfix everything in case the exit never fired
+          if (fixed) {
+            unfixBG();
+          }
+          if (backgroundTinted) {
+            backgroundTinted = false;
+            $('#main').css('background-color', '');
           }
         },
         exit: function() {
