@@ -125,12 +125,32 @@ define([
     });
     slidesText.each(function() {
       var slideText = $(this);
+      var slide = slides.has(slideText);
+      var prevSlide = slide.prev();
+      var nextSlide = slide.next();
+      var slideContainer = slideContainers.has(slide);
+      var background = slide.find('.background');
+      var prevBackground = prevSlide.find('.background');
+      var nextBackground = nextSlide.find('.background');
+      var video = background.find('video');
+      var prevVideo = prevBackground.find('video');
+      var nextVideo = nextBackground.find('video');
       scroll.on(this, {
+        intersectsTop: function(obj) {
+          if (nextSlide.length) {
+            var position = obj.position;
+            var top = position.elementTop;
+            var bottom = position.elementBottom;
+            var viewportPosition = position.viewportTop - top;
+            var percentage = viewportPosition / (bottom - top);
+            background.css('opacity', 1 - percentage);
+            nextBackground.css('opacity', percentage);
+            if (nextVideo.length && nextVideo[0].paused) {
+              nextVideo[0].play();
+            }
+          }
+        },
         contained: function(obj) {
-          var slide = slides.has(slideText);
-          var slideContainer = slideContainers.has(slide);
-          var background = slide.find('.background');
-          var video = background.find('video');
           if (video.length) {
             if (video[0].readyState !== 4) {
               video[0].load();
