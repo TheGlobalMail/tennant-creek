@@ -85,7 +85,8 @@ define([
           ) {
             backgroundTinted = true;
             if (position.intersectsTop && position.intersectsBottom) {
-              $('#main').css('background-color', 'rgba(0,0,0,1)');
+              $('.slideshow-background').css('opacity', '1');
+              $('.slideshow-background').css('z-index', '1');
             } else {
               var top = 0;
               var bottom;
@@ -99,11 +100,13 @@ define([
                 elementPosition = position.viewportMiddle - position.elementTop;
               }
               percentage = elementPosition / (bottom - top);
-              $('#main').css('background-color', 'rgba(0,0,0,' + percentage + ')');
+              $('.slideshow-background').css('opacity', percentage);
+              $('.slideshow-background').css('z-index', '1');
             }
           } else {
             backgroundTinted = false;
-            $('#main').css('background-color', '');
+            $('.slideshow-background').css('opacity', '0');
+            $('.slideshow-background').css('z-index', '-1');
           }
         },
         outside: function() {
@@ -113,7 +116,8 @@ define([
           }
           if (backgroundTinted) {
             backgroundTinted = false;
-            $('#main').css('background-color', '');
+            $('.slideshow-background').css('opacity', '0');
+            $('.slideshow-background').css('z-index', '-1');
           }
         },
         exit: function() {
