@@ -1,6 +1,7 @@
 
 // Overwrite TGM Bootstrap nav styles
 @sansFontFamily: "open-sans", "Open Sans", Helvetica, Arial, sans-serif;
+@baseFontSize: 14px;
 
 // not sure if this is a terrible idea or not
 // apparently it crashes IE6 though, so that's a plus
@@ -30,7 +31,14 @@ html,body {
 body {
   font-size: 20px;
   color: initial;
+  background: #fffffc;
 }
+
+video {
+  display: block;
+  width: 100%;
+}
+
 
 a {
   color: #777;
@@ -43,7 +51,7 @@ a {
 img { max-width: 100%; }
 
 @textWidth: 660px; // used in main text layout
-@highlightColor: #61778e; // placeholder at the mo?
+@highlightColor: #555;
 
 // Reused Mixins
 .animation (...) {
@@ -178,6 +186,7 @@ article {
 .slide-container {
   position: relative;
   z-index: 0;
+  margin: 2em 0;
   .background {
     background-repeat: no-repeat;
     background-size: cover;
@@ -268,6 +277,14 @@ article {
   border-bottom: 1px solid rgba(0,0,0,0.8);
 }
 
+.caption-text-styles() {
+      font-family: @sansFontFamily;
+      font-size: @baseFontSize * 0.9;
+      padding: 0.5em 0 0 0;
+      color: @gray;
+      .credit { color: @grayLight; }  
+}
+
 .text-and-bg-position-classes(@textWidth: 420px) {
   &.text-top-left .text      { position: absolute; top: 1em; left: 1em; }
   &.text-top-right .text     { position: absolute; top: 1em; right: 1em; }
@@ -286,23 +303,25 @@ article {
 }
 
 .slide {
-  @textWidth: 420px;
+  @slideTextWidth: @textWidth * .8;
   position: relative;
   width: 100%;
   overflow: hidden;
-  .text-and-bg-position-classes(@textWidth);
+  .text-and-bg-position-classes(@slideTextWidth);
   .text-container {
     position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
     z-index: 2;
-    .text {
-      .bigCondensed();
-      font-size: 2em; 
-      .topBottomBorder();
-      padding: 10px 0;
-      box-sizing: content-box; 
+    .text { 
+        .bigCondensed(@slideTextWidth);
+          font-size: 2em; 
+        .topBottomBorder();
+        box-sizing: content-box; 
+        p {
+          padding: 20px 0 10px 0;
+        }
     }
   }
   .background {
@@ -340,27 +359,35 @@ article {
     word-wrap: break-word;
     padding-left: 20px;
     padding-right: 20px;
-    &:first-of-type, &.bigger {
+    &:last-child {
+      margin-bottom: 80px;
+    }
+    &.drop-cap {
       font-weight: normal;
       line-height: 1.1;
       font-size: 1.7em; 
       font-family: "alternate-gothic-no-3-d", sans-serif;
-//      color: @highlightColor;
-      text-align: center;
-      &:first-letter {
-        // drop cap styling goes here
+      color:#444; 
+      text-shadow: 0 1px 0 #fff;
+      &:first-line {
+        text-transform: uppercase;  
       }
+    &:first-letter { 
+      font-size:350%; 
+      margin:11px 0 -5px 0; 
+      padding:0 .1em 0 0; 
+      height:.7em; 
+      line-height:.85em; 
+      float:left; 
+      *line-height:1em; /* IE7 Only */ 
     }
-    &:last-child {
-      margin-bottom: 40px;
-    }
-    &.drop-cap {
 
     }
   }
   > blockquote {
     p {
       .bigCondensed((@textWidth * 1.4), @highlightColor, #ccc, 2em);
+      margin: 1em auto;
     }
   }
 
@@ -368,14 +395,18 @@ article {
     max-width: @textWidth * 0.75;
     padding: 0  1.5em 1em 1.5em; 
     box-sizing: content-box; 
-    img {
+    .media {
       border-radius: 4px;
       box-shadow: 0 0 1px 1px #ccc;
+      overflow: hidden;
+    }
+    .caption {
+      .caption-text-styles;
     }
     &.full-width {
       max-width: none;
       width: 97%;
-      padding: 0 1.5% 1em 1.5%; 
+      padding: 1em 1.5% 1em 1.5%; 
       margin: 0 auto;
       img { width: 100%; }
     }
@@ -411,15 +442,32 @@ article {
   }
 }
 
-.quote-with-portrait {
+.quote-with-portrait-wrapper {
   .clearfix;
   max-width: @textWidth * 2;
   margin: 2em auto;
   padding: 0 1em;
   float: none;
   box-sizing: content-box;
-    position: relative;
 
+  .caption {
+    width: 65%;
+    .caption-text-styles;
+  }
+
+  // portrait-left is the default
+  &, &.portrait-left {
+    .quote-rules { right: 2%; }
+    .portrait, .caption { float: left; }    
+  }
+  &.portrait-right {
+    .quote-rules { left: 2%; }
+    .portrait, .caption { float: right; }
+  }
+}
+
+.quote-with-portrait {
+  .clearfix;
   .quote-rules {
     width: 30%;
     height: 100%;
@@ -428,6 +476,7 @@ article {
   }
 
   .quote-wrapper {
+    .clearfix;
     display: table;
     width: 100%;
     height: 100%;
@@ -444,19 +493,9 @@ article {
     box-sizing: content-box;
     background: magenta; 
     margin: 0;
-    img {
-      border-radius: 3px;
-    }
+    img { border-radius: 3px; }
+    .clearfix;
   }
-  &.portrait-left {
-    .quote-rules { right: 2%; }
-    .portrait { float: left; }
-  }
-  &.portrait-right {
-    .quote-rules { left: 2%; }
-    .portrait { float: right; }
-  }
-
 }
 
 .article-footer {
@@ -464,18 +503,14 @@ article {
   background: url('/assets/images/silhoette-kids-MPB20531.jpg') no-repeat;
   background-size: cover;
   .credits {
+    color: #ccc;
+    font-size: @baseFontSize;      
     position: absolute;
     bottom: 0;
     width: 50%;
     list-style: none;
     margin: 4em;
-    color: white;
   }
-}
-
-video {
-  display: block;
-  width: 100%;
 }
 
 .autoplay-when-visible {
