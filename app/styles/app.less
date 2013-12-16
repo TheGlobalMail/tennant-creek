@@ -68,6 +68,15 @@ img { max-width: 100%; }
   -o-transform:      @string;
 }
 
+.translateZ(@translate) {
+  // GPU hack
+  -webkit-transform: translatez(@translate);
+  -moz-transform: translatez(@translate);
+  -ms-transform: translatez(@translate);
+  -o-transform: translatez(@translate);
+  transform: translatez(@translate);
+}
+
 .rotation-frames() {
   0%   { .transform(rotate(0deg)); }
   100% { .transform(rotate(360deg)); }
@@ -86,9 +95,9 @@ img { max-width: 100%; }
   position: fixed;
   width: 100%;
   height: 100%;
-  background: #111;
+  transition: background-color 0.25s linear;
   z-index: -1;
-  opacity: 0;
+  .translateZ(0);
 }
 
 body.loading {
@@ -97,6 +106,7 @@ body.loading {
   position: fixed;
   overflow: hidden;
   background: rgba(22,22,21,.9) url('/images/noise-overlay.png') center center repeat;
+  .translateZ(0);
   .pre-load-background {
     display: block;
     position: absolute;
@@ -205,6 +215,9 @@ article {
   position: relative;
   z-index: 10;
   margin: 2em 0;
+  .article-header & {
+    margin-top: 0;
+  }
   .background {
     background-repeat: no-repeat;
     background-size: cover;
@@ -349,6 +362,10 @@ article {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    &.fixed {
+      position: fixed;
+      .translateZ(0);
+    }
     video {
       position: absolute;
       top: 0;

@@ -9,6 +9,11 @@ define([
   var slides;
   var slidesText;
   var fixedHeaderHeight;
+  var slideshowBackground;
+
+  var getSlideshowBackgroundColour = function(opacity) {
+    return 'rgba(17, 17, 17, ' + opacity + ')';
+  };
 
   var sizeSlideContainers = function() {
     var slideHeight = window.innerHeight - fixedHeaderHeight;
@@ -42,19 +47,15 @@ define([
         fixed = true;
         slideContainer
           .find('.background')
-          .css({
-            position: 'fixed',
-            top: fixedHeaderHeight
-          });
+          .addClass('fixed')
+          .css('top', fixedHeaderHeight);
       };
       var unfixBG = function() {
         fixed = false;
         slideContainer
           .find('.background')
-          .css({
-            position: '',
-            top: ''
-          });
+          .removeClass('fixed')
+          .css('top', '');
       };
 
       scroll.on(this, {
@@ -85,8 +86,10 @@ define([
           ) {
             backgroundTinted = true;
             if (position.intersectsTop && position.intersectsBottom) {
-              $('.slideshow-background').css('opacity', '1');
-              $('.slideshow-background').css('z-index', '1');
+              slideshowBackground.css({
+                'background-color': getSlideshowBackgroundColour(1),
+                'z-index': 1
+              });
             } else {
               var top = 0;
               var bottom;
@@ -100,13 +103,17 @@ define([
                 elementPosition = position.viewportMiddle - position.elementTop;
               }
               percentage = elementPosition / (bottom - top);
-              $('.slideshow-background').css('opacity', percentage);
-              $('.slideshow-background').css('z-index', '1');
+              slideshowBackground.css({
+                'background-color': getSlideshowBackgroundColour(percentage),
+                'z-index': 1
+              });
             }
           } else {
             backgroundTinted = false;
-            $('.slideshow-background').css('opacity', '0');
-            $('.slideshow-background').css('z-index', '-1');
+            slideshowBackground.css({
+              'background-color': getSlideshowBackgroundColour(0),
+              'z-index': -1
+            });
           }
         },
         outside: function() {
@@ -116,8 +123,10 @@ define([
           }
           if (backgroundTinted) {
             backgroundTinted = false;
-            $('.slideshow-background').css('opacity', '0');
-            $('.slideshow-background').css('z-index', '-1');
+            slideshowBackground.css({
+              'background-color': getSlideshowBackgroundColour(0),
+              'z-index': '-1'
+            });
           }
         },
         exit: function() {
@@ -177,10 +186,29 @@ define([
     });
   };
 
+  var hexToRgb = function(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+      return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  };
+
+
+
+
   var init = function() {
     slideContainers = $('.slide-container');
     slides = slideContainers.find('.slide');
     slidesText = slides.find('.text');
+    slideshowBackground = $('.slideshow-background');
 
     fixedHeaderHeight = $('.navbar').outerHeight();
 
