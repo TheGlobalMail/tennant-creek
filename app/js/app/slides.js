@@ -14,7 +14,7 @@ define([
   var slideshowBackground;
 
   var getSlideshowBackgroundColour = function(opacity) {
-    return 'rgba(17, 17, 17, ' + opacity + ')';
+    return 'rgba(30, 30, 30, ' + opacity + ')';
   };
 
   var sizeSlideContainers = function() {
