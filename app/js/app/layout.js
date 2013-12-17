@@ -19,8 +19,10 @@ define([
     var splitHeadlines = $('.headline.spans');
     splitHeadlines.each(function() {
       var headlineText = $(this).html().trim().split(' ');
-      for (i in headlineText) {
-        headlineText[i] = '<b class="word word-' + (headlineText.indexOf(headlineText[i]) + 1) + '">' + headlineText[i] + '</b>';   
+      for (var i in headlineText) {
+        if (headlineText.hasOwnProperty(i)) {
+          headlineText[i] = '<b class="word word-' + (headlineText.indexOf(headlineText[i]) + 1) + '">' + headlineText[i] + '</b>';
+        }
       }
       var text = headlineText.join('');
       $(this).html(text);
@@ -34,8 +36,11 @@ define([
     var splitHeadlineWords = $('.headline.spans .word');
     splitHeadlineWords.each(function() {
       var headlineText = $(this).html().trim().split('');
-      for (i in headlineText)
-          headlineText[i] = '<b class="char">' + headlineText[i] + '</b>';   
+      for (var i in headlineText) {
+        if (headlineText.hasOwnProperty(i)) {
+          headlineText[i] = '<b class="char">' + headlineText[i] + '</b>';
+        }
+      }
       var text = headlineText.join('');
       $(this).html(text);
     });
