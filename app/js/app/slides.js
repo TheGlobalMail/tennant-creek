@@ -147,6 +147,7 @@ define([
       var nextBackground = nextSlide.find('.background');
       var video = background.find('video').get(0);
       var nextVideo = nextBackground.find('video').get(0);
+      var hasPlayed = false;
 
       scroll.on(this, {
         intersectsTop: function(obj) {
@@ -163,9 +164,10 @@ define([
             }
           }
         },
-        contained: function(obj) {
-          if (video) {
+        contained: function() {
+          if (video && !hasPlayed) {
             mediaUtils.play(video);
+            hasPlayed = true;
           }
           background.css('opacity', 1);
           otherBackgrounds.each(function() {
@@ -176,6 +178,9 @@ define([
             }
             otherBackground.css('opacity', 0);
           });
+        },
+        exit: function() {
+          hasPlayed = false;
         }
       });
     });
