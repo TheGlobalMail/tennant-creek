@@ -60,6 +60,7 @@ define([
       };
 
       scroll.on(this, {
+        trackDelay: 10,
         enter: function() {
           mediaAssets.each(function() {
             if (this.readyState !== 4) {
