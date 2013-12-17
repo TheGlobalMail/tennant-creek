@@ -44,7 +44,7 @@ define([
     var viewportHeight = viewport.getHeight();
     var scrollY = viewport.getScrollY();
 
-    var currentTime = +new Date;
+    var currentTime = Date.now();
 
     _(trackedElements)
       .filter(function(obj) {

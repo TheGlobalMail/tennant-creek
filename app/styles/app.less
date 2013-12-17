@@ -350,13 +350,13 @@ article {
     height: 100%;
     z-index: 2;
     .text { 
-        .bigCondensed(@slideTextWidth);
-          font-size: 2em; 
-        .topBottomBorder();
-        box-sizing: content-box; 
-        p {
-          padding: 20px 0 10px 0;
-        }
+      .bigCondensed(@slideTextWidth);
+      .topBottomBorder();
+      font-size: 2em;
+      box-sizing: content-box;
+      p {
+        padding: 20px 0 10px 0;
+      }
     }
   }
   .background {
@@ -371,6 +371,7 @@ article {
       position: fixed;
       .translateZ(0);
     }
+    .media-container,
     video {
       position: absolute;
       top: 0;

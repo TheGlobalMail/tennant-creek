@@ -10,7 +10,7 @@ define([
 
   var mediaAssets;
   var autoplayMedia;
-  var videoContainers;
+  var mediaContainers;
   var parallaxBackgrounds;
 
   var updateMediaSources = function() {
@@ -49,27 +49,28 @@ define([
     }
   };
 
-  var playMedia = function(element, container) {
+  var playMedia = function(element) {
     mediaUtils.play(element);
 
     loadNextPrevMediaAssets(element);
 
+    var container = mediaContainers.has(element);
     if (element.paused !== true) {
       container.addClass('playing');
     }
     if (!container.hasClass('played')) {
-      container.addClass('played')
+      container.addClass('played');
     }
   };
 
-  var pauseMedia = function(element, container) {
+  var pauseMedia = function(element) {
     element.pause();
-    container.removeClass('playing');
+    mediaContainers.has(element).removeClass('playing');
   };
 
-  var fadeOutMedia = function(element, container) {
+  var fadeOutMedia = function(element) {
     mediaUtils.fadeOut(element);
-    container.removeClass('playing');
+    mediaContainers.has(element).removeClass('playing');
   };
 
   var initProgressBar = function(element, progressBar) {
@@ -104,15 +105,16 @@ define([
     });
   };
 
-  var bindAutoplayMedia = function() {
-    _.each(autoplayMedia, function(element) {
+  var bindMedia = function() {
+    _.each(mediaContainers, function(element) {
       var container = $(element);
       var media = container.find('video, audio')[0];
       var controls = container.find('.controls');
       var progressBar = container.find('.progress-bar');
       var hasPlayed = false;
+      var isAutoplay = container.hasClass('autoplay-when-visible');
 
-      if (settings.jsCanAutoplayMedia) {
+      if (isAutoplay && settings.jsCanAutoplayMedia) {
         scroll.on(container, {
           contained: function() {
             if (media.paused && !hasPlayed) {
@@ -147,7 +149,7 @@ define([
   };
 
   var addMediaControls = function() {
-    _.each(autoplayMedia, function(element) {
+    _.each(mediaContainers, function(element) {
       var container = $(element);
       var playIcon = 'icon-play';
       if (container.find('audio').length) {
@@ -166,18 +168,20 @@ define([
   };
 
   var setBindings = function() {
-    bindAutoplayMedia();
+    bindMedia();
   };
 
   var init = function() {
     mediaAssets = $('video, audio');
     autoplayMedia = $('.autoplay-when-visible');
-    videoContainers = $('.video-container');
+    mediaContainers = $('.media-container').add(autoplayMedia);
     parallaxBackgrounds = $('.text-over-bg-image');
 
     updateMediaSources();
     addMediaControls();
+
     setBindings();
+
     events.trigger('media:ready');
   };
 

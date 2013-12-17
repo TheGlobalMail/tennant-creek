@@ -2,8 +2,10 @@ define([
   'jquery',
   'lodash',
   'scroll',
-  'mediaUtils'
-], function($, _, scroll, mediaUtils) {
+  './media',
+  'mediaUtils',
+  'events'
+], function($, _, scroll, media, mediaUtils, events) {
 
   var slideContainers;
   var slides;
@@ -32,7 +34,7 @@ define([
   var addSlideBackgrounds = function() {
     // Add `.background` elements to slides without
     slides.not(':has(.background)').each(function() {
-      $('<div class="background"></div>')
+      $('<div class="background">')
         .appendTo(this);
     });
   };
@@ -40,21 +42,20 @@ define([
   var bindSlideContainers = function() {
     slideContainers.each(function() {
       var slideContainer = $(this)
+      var backgrounds = slideContainer.find('.background');
       var fixed = false;
       var backgroundTinted = false;
       var mediaAssets = slideContainer.find('video, audio');
 
       var fixBG = function() {
         fixed = true;
-        slideContainer
-          .find('.background')
+        backgrounds
           .addClass('fixed')
           .css('top', fixedHeaderHeight);
       };
       var unfixBG = function() {
         fixed = false;
-        slideContainer
-          .find('.background')
+        backgrounds
           .removeClass('fixed')
           .css('top', '');
       };
@@ -62,11 +63,7 @@ define([
       scroll.on(this, {
         trackDelay: 10,
         enter: function() {
-          mediaAssets.each(function() {
-            if (this.readyState !== 4) {
-              this.load();
-            }
-          });
+          _.each(mediaAssets, mediaUtils.load);
         },
         inside: function(obj) {
           var position = obj.position;
@@ -115,8 +112,8 @@ define([
 
         },
         outside: function() {
-          // unfix everything in case the exit never fired
           if (fixed) {
+            // unfix everything, just in case
             unfixBG();
           }
           if (backgroundTinted) {
@@ -160,13 +157,13 @@ define([
             background.css('opacity', 1 - percentage);
             nextBackground.css('opacity', percentage);
             if (nextVideo && nextVideo.paused) {
-              mediaUtils.play(nextVideo);
+              media.playMedia(nextVideo);
             }
           }
         },
         contained: function() {
           if (video && !hasPlayed) {
-            mediaUtils.play(video);
+            media.playMedia(video);
             hasPlayed = true;
           }
           background.css('opacity', 1);
@@ -174,7 +171,7 @@ define([
             var otherBackground = $(this);
             var otherVideo = otherBackground.find('video').get(0);
             if (otherVideo) {
-              mediaUtils.pause(otherVideo);
+              media.pauseMedia(otherVideo);
             }
             otherBackground.css('opacity', 0);
           });

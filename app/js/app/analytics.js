@@ -12,7 +12,7 @@ define([
   });
 
   var logScrollTracking = function() {
-    var scrollPercentage = ((viewport.getScrollY() + window.innerHeight) / document.body.clientHeight) * 100;
+    var scrollPercentage = ((viewport.getScrollY() + window.innerHeight) / $(document).height()) * 100;
     _.each(pointsToTrack, function(percentage) {
       if (scrollPercentage >= percentage) {
         var gaCommand = '_trackEvent';
