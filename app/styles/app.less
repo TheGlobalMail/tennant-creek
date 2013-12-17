@@ -7,8 +7,18 @@
 // apparently it crashes IE6 though, so that's a plus
 * { position: relative; box-sizing: border-box; }
 
+.translateZ(@translate) {
+  // GPU hack
+  -webkit-transform: translatez(@translate);
+  -moz-transform: translatez(@translate);
+  -ms-transform: translatez(@translate);
+  -o-transform: translatez(@translate);
+  transform: translatez(@translate);
+}
+
 .navbar {
   margin: 0;
+  .translateZ(0);
   &.special-feature {
     position: fixed;
     top: 0;
@@ -66,15 +76,6 @@ img { max-width: 100%; }
   -moz-transform:    @string;
   -ms-transform:     @string;
   -o-transform:      @string;
-}
-
-.translateZ(@translate) {
-  // GPU hack
-  -webkit-transform: translatez(@translate);
-  -moz-transform: translatez(@translate);
-  -ms-transform: translatez(@translate);
-  -o-transform: translatez(@translate);
-  transform: translatez(@translate);
 }
 
 .rotation-frames() {
