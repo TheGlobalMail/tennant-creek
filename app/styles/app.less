@@ -426,6 +426,8 @@ article {
     }
   }
   > blockquote {
+    border: 0;
+    padding: 0;
     p {
       .bigCondensed((@textWidth * 1.4), @highlightColor, #ccc, 2em);
       margin: 1em auto;
@@ -434,7 +436,7 @@ article {
 
   .related {
     max-width: @textWidth * 0.75;
-    padding: 0  1.5em 1em 1.5em; 
+    padding: 0.5em 1.5em 1em 1.5em; 
     box-sizing: content-box; 
     .media {
       border-radius: 4px;
@@ -456,9 +458,9 @@ article {
     &.centered { margin: 0 auto; }
     &.two-up {
       .clearfix;
-      max-width: @textWidth * 2 + 40px;
+      max-width: @textWidth * 0.75 * 2 + 40px;
       margin: 0 auto;
-      .child { max-width: @textWidth; }
+      .child { width: 48%; }
       .left { float: left; }
       .right { float: right; }
     }
@@ -526,7 +528,7 @@ article {
     display: table-cell;
     text-align: center;
     vertical-align: middle;
-    .bigCondensed(100%, @highlightColor, #ccc, 2.2em);
+    .bigCondensed(100%, @highlightColor, #ccc, 2em);
   }
 
   .portrait {

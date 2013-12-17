@@ -1,0 +1,60 @@
+// variable for breakpoints
+@smallerWidth:  680px;    // Phones
+@smallWidth:    780px;    // Big phones, small tablets
+@medWidth:      980px;    // Portrait tablets
+@bigWidth:      1120px;   // Landscape tablets, smaller screens
+@biggerWidth:   @bigWidth + 1px;   // Big screens (default, used as min-width)
+
+@medScreenMargin: 20px;
+@smlScreenMargin: 10px;
+
+.responsiveBG(@imgName, @extension: 'jpg') {
+  @imgBase: "/images/@{imgName}-size";
+  // default to the largest image
+  background-image: url("@{imgBase}5.@{extension}");
+
+  @media only screen and (max-width: @bigWidth)     { background-image: url("@{imgBase}4.@{extension}"); }
+  @media only screen and (max-width: @medWidth)     { background-image: url("@{imgBase}3.@{extension}"); }
+  @media only screen and (max-width: @smallWidth)   { background-image: url("@{imgBase}2.@{extension}"); }
+  @media only screen and (max-width: @smallerWidth) { background-image: url("@{imgBase}1.@{extension}"); }
+}
+
+.responsiveBGInArticle(@imgName, @extension: 'jpg') {
+  @imgBase: "/images/@{imgName}-size";
+  // default to the largest image
+  background-image: url("@{imgBase}4.@{extension}");
+  @media only screen and (max-width: @medWidth)     { background-image: url("@{imgBase}3.@{extension}"); }
+  @media only screen and (max-width: @smallWidth)   { background-image: url("@{imgBase}2.@{extension}"); }
+  @media only screen and (max-width: @smallerWidth) { background-image: url("@{imgBase}1.@{extension}"); }
+}
+
+// iPad Landscape & smaller screens
+@media only screen and (max-width: @bigWidth) {
+	.article-section > blockquote p,
+	.quote-with-portrait .quote-text,
+	.slide .text-container .text {
+	 	font-size: 1.6em;
+	}
+}
+
+// Portrait tablets
+@media only screen and (max-width: @medWidth) {
+
+}
+
+// Big phones, small tablets
+@media only screen and (max-width: @smallWidth) {
+
+}
+
+// Phones
+@media only screen and (max-width: @smallerWidth) {
+
+}
+
+// FF specific
+@-moz-document url-prefix() {
+  @media only screen and (max-width: @smallerWidth) {
+
+  }
+}
