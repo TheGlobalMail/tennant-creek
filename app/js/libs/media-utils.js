@@ -1,4 +1,6 @@
-define([], function() {
+define([
+  'settings'
+], function(settings) {
 
   var states = {
     fadeIn: 'fade-in',
@@ -12,14 +14,55 @@ define([], function() {
     volumeMin: 0
   };
 
-  var getStepAmount = function(options) {
+  var _unwrapElement = function(element) {
+    if (element.jquery) {
+      return element.get(0);
+    }
+    return element;
+  };
+
+  var load = function(element) {
+    element = _unwrapElement(element);
+    if (element.readyState !== 4) {
+      if (settings.debug) {
+        console.log('Loading media asset...', element);
+      }
+      element.load();
+    }
+  };
+
+  var play = function(element) {
+    element = _unwrapElement(element);
+    load(element);
+
+    if (!element.paused) {
+      // Already playing
+      return;
+    }
+
+    if (element.currentTime > 0) {
+      // Avoid clipping, but try to resume in place
+      fadeIn(element, {
+        duration: 100
+      });
+    } else {
+      fadeIn(element);
+    }
+  };
+
+  var pause = function(element) {
+    element.pause();
+    fadeOut(element, {
+      duration: 10
+    });
+  };
+
+  var _getStepAmount = function(options) {
     if (!options) {
       options = defaultOptions;
     }
     return options.stepDelay / options.duration;
   };
-
-  // TODO: add support for options arguments
 
   var fadeIn = function(sound, options) {
 
@@ -28,7 +71,7 @@ define([], function() {
     sound.__mediaUtilsState__ = states.fadeIn;
     sound.volume = 0;
 
-    var stepAmount = getStepAmount(options);
+    var stepAmount = _getStepAmount(options);
 
     if (sound.paused || sound.readyState == 4) {
       sound.play();
@@ -58,7 +101,7 @@ define([], function() {
 
     sound.__mediaUtilsState__ = states.fadeOut;
 
-    var stepAmount = getStepAmount(options);
+    var stepAmount = _getStepAmount(options);
 
     var _fadeOut = function(sound, options) {
       if (sound.__mediaUtilsState__ !== states.fadeOut) {
@@ -80,6 +123,9 @@ define([], function() {
   };
 
   return {
+    load: load,
+    play: play,
+    pause: pause,
     fadeIn: fadeIn,
     fadeOut: fadeOut
   };

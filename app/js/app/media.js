@@ -8,6 +8,7 @@ define([
   'mediaUtils'
 ], function($, _, scroll, events, viewport, settings, mediaUtils) {
 
+  var mediaAssets;
   var autoplayMedia;
   var videoContainers;
   var parallaxBackgrounds;
@@ -24,20 +25,34 @@ define([
     });
   };
 
-  var playMedia = function(element, container) {
-    // TODO: use a predictive method to precache vids
-    if (element.readyState !== 4) {
-      element.load();
+  var loadNextPrevMediaAssets = function(element) {
+    if (element.jquery) {
+      element = element.get(0);
     }
 
-    if (element.currentTime > 0) {
-      // Avoid clipping, but try to resume in place
-      mediaUtils.fadeIn(element, {
-        duration: 100
-      });
-    } else {
-      mediaUtils.fadeIn(element);
+    var mediaAssetIndex;
+    mediaAssets.each(function(index) {
+      if (element === this) {
+        mediaAssetIndex = index;
+      }
+    });
+
+    if (mediaAssetIndex) {
+      var nextMediaAsset = mediaAssets.get(mediaAssetIndex + 1);
+      if (nextMediaAsset) {
+        mediaUtils.load(nextMediaAsset);
+      }
+      var prevMediaAsset = mediaAssets.get(mediaAssetIndex - 1);
+      if (prevMediaAsset) {
+        mediaUtils.load(prevMediaAsset);
+      }
     }
+  };
+
+  var playMedia = function(element, container) {
+    mediaUtils.play(element);
+
+    loadNextPrevMediaAssets(element);
 
     if (element.paused !== true) {
       container.addClass('playing');
@@ -47,13 +62,13 @@ define([
     }
   };
 
-  var fadeOutMedia = function(element, container) {
-    mediaUtils.fadeOut(element);
+  var pauseMedia = function(element, container) {
+    element.pause();
     container.removeClass('playing');
   };
 
-  var pauseMedia = function(element, container) {
-    element.pause();
+  var fadeOutMedia = function(element, container) {
+    mediaUtils.fadeOut(element);
     container.removeClass('playing');
   };
 
@@ -63,6 +78,7 @@ define([
     var minutes = parseInt(durationData[0]);
     var seconds = parseInt(durationData[1]);
     var duration = (minutes * 60) + seconds;
+    var hasFinished = false;
 
     var progress = progressBar.find('.progress');
 
@@ -71,7 +87,7 @@ define([
         duration = element.duration;
       }
       var percentage = (element.currentTime / duration) * 100;
-      if (percentage > 100) {
+      if (hasFinished || percentage > 100) {
         percentage = 100;
       }
       progress.css('width', percentage + '%');
@@ -82,9 +98,9 @@ define([
 
     progressUpdater();
 
-    // Ensure that the progress bar hits 100% on completion of the media
     $(element).on('ended', function() {
-      progress.css('width', '100%');
+      // Ensure that the progress bar hits 100% on completion of the media
+      hasFinished = true;
     });
   };
 
@@ -154,6 +170,7 @@ define([
   };
 
   var init = function() {
+    mediaAssets = $('video, audio');
     autoplayMedia = $('.autoplay-when-visible');
     videoContainers = $('.video-container');
     parallaxBackgrounds = $('.text-over-bg-image');
@@ -165,6 +182,8 @@ define([
   };
 
   return {
-    init: init
+    init: init,
+    playMedia: playMedia,
+    pauseMedia: pauseMedia
   };
 });

@@ -2,8 +2,8 @@ define([
   'jquery',
   'lodash',
   'scroll',
-  'viewport'
-], function($, _, scroll, viewport) {
+  'mediaUtils'
+], function($, _, scroll, mediaUtils) {
 
   var slideContainers;
   var slides;
@@ -147,6 +147,7 @@ define([
       var nextBackground = nextSlide.find('.background');
       var video = background.find('video').get(0);
       var nextVideo = nextBackground.find('video').get(0);
+
       scroll.on(this, {
         intersectsTop: function(obj) {
           if (nextSlide.length) {
@@ -158,25 +159,20 @@ define([
             background.css('opacity', 1 - percentage);
             nextBackground.css('opacity', percentage);
             if (nextVideo && nextVideo.paused) {
-              nextVideo.play();
+              mediaUtils.play(nextVideo);
             }
           }
         },
         contained: function(obj) {
           if (video) {
-            if (video.readyState !== 4) {
-              video.load();
-            }
-            if (video.paused) {
-              video.play();
-            }
+            mediaUtils.play(video);
           }
           background.css('opacity', 1);
           otherBackgrounds.each(function() {
             var otherBackground = $(this);
             var otherVideo = otherBackground.find('video').get(0);
             if (otherVideo) {
-              otherVideo.pause();
+              mediaUtils.pause(otherVideo);
             }
             otherBackground.css('opacity', 0);
           });
