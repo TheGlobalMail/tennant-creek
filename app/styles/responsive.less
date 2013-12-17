@@ -31,10 +31,16 @@
 // iPad Landscape & smaller screens
 @media only screen and (max-width: @bigWidth) {
 	.article-section > blockquote p,
+	.article-section p.drop-cap,
 	.quote-with-portrait .quote-text,
 	.slide .text-container .text {
 	 	font-size: 1.6em;
 	}
+
+	.slide .text-container .text {
+		max-width: @textWidth * 0.6;
+	}
+
 }
 
 // Portrait tablets
