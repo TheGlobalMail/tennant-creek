@@ -30,6 +30,9 @@
 
 // iPad Landscape & smaller screens
 @media only screen and (max-width: @bigWidth) {
+	.article-section > p {
+		font-size: 18px; 
+	}
 	.article-section > blockquote p,
 	.article-section p.drop-cap,
 	.quote-with-portrait .quote-text,
@@ -40,16 +43,48 @@
 	.slide .text-container .text {
 		max-width: @textWidth * 0.6;
 	}
-
 }
 
 // Portrait tablets
 @media only screen and (max-width: @medWidth) {
-
+	.article-section > blockquote p,
+	.article-section p.drop-cap,
+	.quote-with-portrait .quote-text,
+	.slide .text-container .text {
+	 	font-size: 1.4em;
+	 	line-height: 1.1;
+	}
 }
 
 // Big phones, small tablets
 @media only screen and (max-width: @smallWidth) {
+	.quote-with-portrait-wrapper {
+		max-width: @textWidth;
+		box-sizing: border-box;
+		padding: 0 0;
+		margin: 1em 40px;
+		.quote-rules, .portrait {
+			position: relative;
+			width: 100%;
+		}
+
+		&.portrait-left, &.portrait-right, & {
+			.portrait {
+				float: none;				
+			}
+			.quote-rules {
+				.clearfix;
+				height: auto;
+				left: auto;
+				right: auto;
+				margin-top: 1em;
+				&:before, &:after { position: relative; top: auto; bottom: auto; }
+			}
+			.quote-wrapper {
+				padding: 1em 0;
+			}
+		}
+	}
 
 }
 
