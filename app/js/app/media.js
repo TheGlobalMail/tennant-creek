@@ -8,7 +8,6 @@ define([
   'mediaUtils'
 ], function($, _, scroll, events, viewport, settings, mediaUtils) {
 
-  var slideContainers;
   var autoplayMedia;
   var videoContainers;
   var parallaxBackgrounds;

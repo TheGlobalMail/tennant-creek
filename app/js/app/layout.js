@@ -46,6 +46,10 @@ define([
     });
   };
 
+  var setBindings = function() {
+    $(window).on('resize', _.debounce(sizeFooter, 100))
+  };
+
   var init = function() {
     slideContainers = $('.slide-container');
     articleFooter = $('.article-footer');
@@ -55,6 +59,8 @@ define([
     wordsInSpans();
     // lettersInSpans();
     sizeFooter();
+
+    setBindings();
 
     events.trigger('layout:ready');
   };

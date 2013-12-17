@@ -5,6 +5,7 @@ define([
 ], function scroll($, _, viewport) {
 
   var trackedElements = [];
+  var eventNamespace = '.scroll';
 
   var on = function(element, bindings) {
     var obj = {
@@ -80,8 +81,8 @@ define([
   var init = function() {
     updateElements();
     checkElements();
-    $(window).on('scroll.checkElements', _.throttle(checkElements, 75));
-    $(window).on('resize.updateElements', _.debounce(function() {
+    $(window).on('scroll' + eventNamespace, _.throttle(checkElements, 75));
+    $(window).on('resize' + eventNamespace, _.debounce(function() {
       updateElements();
       checkElements();
     }, 100));

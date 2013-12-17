@@ -37,11 +37,12 @@ define([
     });
   };
 
-  var setBindings = function() {
+  var bindSlideContainers = function() {
     slideContainers.each(function() {
       var slideContainer = $(this)
       var fixed = false;
       var backgroundTinted = false;
+      var mediaAssets = slideContainer.find('video, audio');
 
       var fixBG = function() {
         fixed = true;
@@ -60,7 +61,7 @@ define([
 
       scroll.on(this, {
         enter: function() {
-          slideContainer.find('video, audio').each(function() {
+          mediaAssets.each(function() {
             if (this.readyState !== 4) {
               this.load();
             }
@@ -68,24 +69,18 @@ define([
         },
         inside: function(obj) {
           var position = obj.position;
-          if (
-            (position.intersectsTop && position.intersectsBottom) &&
-            !fixed
-          ) {
+          var intersectsTopAndBottom = position.intersectsTop && position.intersectsBottom;
+
+          if (intersectsTopAndBottom && !fixed) {
             fixBG();
-          } else if (
-            !(position.intersectsTop && position.intersectsBottom) &&
-            viewport.getScrollY() > 0 &&
-            fixed
-          ) {
+          } else if (!intersectsTopAndBottom && position.viewportTop > 0 && fixed) {
             unfixBG();
           }
+
           // Enter slideshow transition
-          if (
-            position.intersectsMiddle
-          ) {
+          if (position.intersectsMiddle) {
             backgroundTinted = true;
-            if (position.intersectsTop && position.intersectsBottom) {
+            if (intersectsTopAndBottom) {
               slideshowBackground.css({
                 'background-color': getSlideshowBackgroundColour(1),
                 'z-index': 1
@@ -108,6 +103,7 @@ define([
                 'z-index': 1
               });
             }
+            // Exit slideshow transition
           } else {
             backgroundTinted = false;
             slideshowBackground.css({
@@ -115,6 +111,7 @@ define([
               'z-index': -1
             });
           }
+
         },
         outside: function() {
           // unfix everything in case the exit never fired
@@ -130,24 +127,25 @@ define([
           }
         },
         exit: function() {
-          slideContainer.find('video').each(function() {
+          mediaAssets.each(function() {
             this.pause()
           });
         }
       });
     });
+  };
+
+  var bindSlideText = function() {
     slidesText.each(function() {
       var slideText = $(this);
       var slide = slides.has(slideText);
-      var prevSlide = slide.prev();
       var nextSlide = slide.next();
       var slideContainer = slideContainers.has(slide);
       var background = slide.find('.background');
-      var prevBackground = prevSlide.find('.background');
+      var otherBackgrounds = slideContainer.find('.background').not(background);
       var nextBackground = nextSlide.find('.background');
-      var video = background.find('video');
-      var prevVideo = prevBackground.find('video');
-      var nextVideo = nextBackground.find('video');
+      var video = background.find('video').get(0);
+      var nextVideo = nextBackground.find('video').get(0);
       scroll.on(this, {
         intersectsTop: function(obj) {
           if (nextSlide.length) {
@@ -158,26 +156,26 @@ define([
             var percentage = viewportPosition / (bottom - top);
             background.css('opacity', 1 - percentage);
             nextBackground.css('opacity', percentage);
-            if (nextVideo.length && nextVideo[0].paused) {
-              nextVideo[0].play();
+            if (nextVideo && nextVideo.paused) {
+              nextVideo.play();
             }
           }
         },
         contained: function(obj) {
-          if (video.length) {
-            if (video[0].readyState !== 4) {
-              video[0].load();
+          if (video) {
+            if (video.readyState !== 4) {
+              video.load();
             }
-            if (video[0].paused) {
-              video[0].play();
+            if (video.paused) {
+              video.play();
             }
           }
           background.css('opacity', 1);
-          slideContainer.find('.background').not(background).each(function() {
+          otherBackgrounds.each(function() {
             var otherBackground = $(this);
-            var otherVideo = otherBackground.find('video');
-            if (otherVideo.length) {
-              otherVideo[0].pause();
+            var otherVideo = otherBackground.find('video').get(0);
+            if (otherVideo) {
+              otherVideo.pause();
             }
             otherBackground.css('opacity', 0);
           });
@@ -186,23 +184,12 @@ define([
     });
   };
 
-  var hexToRgb = function(hex) {
-    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-      return r + r + g + g + b + b;
-    });
+  var setBindings = function() {
+    bindSlideContainers();
+    bindSlideText();
 
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
+    $(window).on('resize', _.debounce(sizeSlideContainers, 100));
   };
-
-
-
 
   var init = function() {
     slideContainers = $('.slide-container');
