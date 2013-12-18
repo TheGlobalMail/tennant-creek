@@ -9,7 +9,7 @@
 @smlScreenMargin: 10px;
 
 .responsiveBG(@imgName, @extension: 'jpg') {
-  @imgBase: "/images/@{imgName}-size";
+  @imgBase: "/assets/images/@{imgName}-";
   // default to the largest image
   background-image: url("@{imgBase}5.@{extension}");
 
@@ -20,10 +20,18 @@
 }
 
 .responsiveBGInArticle(@imgName, @extension: 'jpg') {
-  @imgBase: "/images/@{imgName}-size";
+  @imgBase: "/assets/images/@{imgName}-";
   // default to the largest image
   background-image: url("@{imgBase}4.@{extension}");
   @media only screen and (max-width: @medWidth)     { background-image: url("@{imgBase}3.@{extension}"); }
+  @media only screen and (max-width: @smallWidth)   { background-image: url("@{imgBase}2.@{extension}"); }
+  @media only screen and (max-width: @smallerWidth) { background-image: url("@{imgBase}1.@{extension}"); }
+}
+
+.responsiveBGPortrait(@imgName, @extension: 'jpg') {
+  @imgBase: "/assets/images/@{imgName}-";
+  // default to the largest image
+  background-image: url("@{imgBase}3.@{extension}");
   @media only screen and (max-width: @smallWidth)   { background-image: url("@{imgBase}2.@{extension}"); }
   @media only screen and (max-width: @smallerWidth) { background-image: url("@{imgBase}1.@{extension}"); }
 }
@@ -98,3 +106,21 @@
 
   }
 }
+
+// responsive images
+.quote-with-portrait .media {
+	background-size: cover;
+	background-position: center center;
+	// 3:2 ratio
+	 &:before {
+	 	content: '';
+	 	display: block;
+	 	padding-top: 66.66%
+	 }
+}
+
+.quote-with-portrait.cheyanne .media { .responsiveBGPortrait('cheyanne-MPB29400b'); }
+.quote-with-portrait.baldwin .media { .responsiveBGPortrait('Melanie-Baldwin_MG_7018'); }
+.quote-with-portrait.bracken .media { .responsiveBGPortrait('georgina-bracken_MG_6892'); }
+.quote-with-portrait.ryan .media { .responsiveBGPortrait('maurie-ryan-MPB29044a'); }
+
