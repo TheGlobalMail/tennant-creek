@@ -27,7 +27,6 @@ define([
       var slides = container.find('.slide');
       var backgrounds = container.find('.background');
       var totalSlideHeight = 0;
-      var backgroundHeight = slideHeight;
 
       slides.each(function() {
         var slide = $(this);
@@ -36,7 +35,8 @@ define([
         var slideText = slide.find('.text');
         var mediaContainer = slide.find('.media-container');
         var slideVideo = slide.find('video');
-        var background = slide.find('.video');
+        var background = slide.find('.background');
+        var backgroundHeight = slideHeight;
 
         if (slideVideo.length) {
           slide.addClass('has-video');
