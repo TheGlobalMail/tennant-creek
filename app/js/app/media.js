@@ -116,14 +116,14 @@ define([
 
       if (isAutoplay && settings.canAutoplay) {
         scroll.on(container, {
-          contained: function() {
+          intersectsMiddle: function() {
             if (media.paused && !hasPlayed) {
-              playMedia(media, container);
+              playMedia(media);
               hasPlayed = true;
             }
           },
           exit: function() {
-            fadeOutMedia(media, container);
+            fadeOutMedia(media);
             hasPlayed = false;
           }
         });
@@ -131,10 +131,10 @@ define([
 
       controls.on('click', function() {
         if (media.paused) {
-          playMedia(media, container);
+          playMedia(media);
           hasPlayed = true;
         } else {
-          pauseMedia(media, container);
+          pauseMedia(media);
         }
       });
 
