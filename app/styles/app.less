@@ -60,6 +60,7 @@ img { max-width: 100%; }
 
 @textWidth: 660px; // used in main text layout
 @highlightColor: #555;
+@grayDarker: rgb(30,30,30);
 
 // Reused Mixins
 .animation (...) {
@@ -212,33 +213,29 @@ article {
 }
 
 .scroll-icon {
-  border-radius: 999px;
   .square(35px);
-  border: 2px solid rgba(255,255,255,0.7);
+  // border-radius: 999px;
+  // border: 2px solid rgba(255,255,255,0.7);
   background: transparent;
   text-align: center;
   padding-top: 4px;
   font-size: 25px; 
-  margin: 2em auto;
+  margin: 0.25em auto 0 auto;
   letter-spacing: 0;
-  text-shadow: none;
-  cursor: pointer;
   opacity: 0.7;
-  &:hover {
-    opacity: 1;
-    background: #fff;
-    color: #333;
-  }
 }
 
 .scroll-prompt {
   .clearfix;
   position: absolute;
   width: 100%;
+  margin: 0 auto;
+  padding: 2em 0;
   text-transform: uppercase;
   font-size: 0.7em;
   letter-spacing: 0.1em;
   text-align: center;
+   opacity: 0.7;
 }
 
 .slide-container {
@@ -251,6 +248,7 @@ article {
   .background {
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: rgb(30, 30, 30); // shows up on .no-autoplay browsers
     // Uncomment to letterbox the images
 //    background-size: 100% auto;
 //    background-position: center;
@@ -578,11 +576,11 @@ article {
   }
 
   .portrait {
+    .clearfix;
     width: 65%;
     box-sizing: content-box;
     margin: 0;
     img { border-radius: 3px; }
-    .clearfix;
   }
 }
 
@@ -693,4 +691,33 @@ article {
       opacity: 0.2;
     }
   }
+}
+
+// CSS tweaks for browsers without autoplay
+body.no-autoplay {
+  .slide-container {
+    padding: 4em 0;
+    &.intro { padding-top: 0; }
+    background: #000;
+    > .slide {
+      margin-bottom: 4em;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  .autoplay-when-visible { 
+    opacity: 1; 
+    .controls, .progress-bar { display: none; }
+    &.portrait {
+      .controls, .progress-bar { display: block; }
+    }
+  }
+
+  .slide {
+    &.text-bottom-left .text   { position: absolute; top: auto; bottom: 1em; left: 1em; }
+    &.text-bottom-right .text  { position: absolute; top: auto; bottom: 1em; right: 1em; }
+    &.text-bottom-center .text { position: absolute; top: auto; bottom: 1em; left: 50%; margin-left: @textWidth * -0.5; }
+
+  }
+
 }
