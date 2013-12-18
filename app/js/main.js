@@ -8,7 +8,8 @@ require.config({
     viewport: './libs/viewport',
     scroll: './libs/scroll',
     scrollTo: '../components/jquery.scrollTo/jquery.scrollTo',
-    mediaUtils: './libs/media-utils'
+    mediaUtils: './libs/media-utils',
+    shims: './libs/shims'
   },
   shim: {
     scrollTo: {
@@ -18,12 +19,13 @@ require.config({
 });
 
 require([
+  'shims',
   'jquery',
   'events',
   './app/main',
   'settings'
 ],
-function($, events, app, settings) {
+function(shims, $, events, app, settings) {
   if (settings.debugEvents) {
     window.fc = events;
   }
