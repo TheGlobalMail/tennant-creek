@@ -59,6 +59,7 @@ img { max-width: 100%; }
 
 @textWidth: 660px; // used in main text layout
 @highlightColor: #555;
+@grayDarker: rgb(30,30,30);
 
 // Reused Mixins
 .animation (...) {
@@ -246,6 +247,7 @@ article {
   .background {
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: rgb(30, 30, 30); // shows up on .no-autoplay browsers
     // Uncomment to letterbox the images
 //    background-size: 100% auto;
 //    background-position: center;
@@ -573,12 +575,12 @@ article {
   }
 
   .portrait {
+    .clearfix;
     width: 65%;
     box-sizing: content-box;
     background: magenta; 
     margin: 0;
     img { border-radius: 3px; }
-    .clearfix;
   }
 }
 
@@ -688,4 +690,26 @@ article {
       opacity: 0.2;
     }
   }
+}
+
+// CSS tweaks for browsers without autoplay
+body.no-autoplay {
+  .slide-container {
+    padding: 4em 0;
+    &.intro { padding-top: 0; }
+    background: #000;
+    > .slide {
+      margin-bottom: 4em;
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  .autoplay-when-visible { 
+    opacity: 1; 
+    .controls, .progress-bar { display: none; }
+    &.portrait {
+      .controls, .progress-bar { display: block; }
+    }
+  }
+
 }
