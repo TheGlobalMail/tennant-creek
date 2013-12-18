@@ -148,8 +148,8 @@ define([
     });
   };
 
-  var addMediaControls = function() {
-    _.each(mediaContainers, function(element) {
+  var addMediaControls = function(containers) {
+    _.each(containers, function(element) {
       var container = $(element);
       var playIcon = 'icon-play';
       if (container.find('audio').length) {
@@ -168,14 +168,21 @@ define([
   };
 
   var delegateToNativeMediaControls = function() {
-    $('slide-containers')
-      .find('video')
+    mediaAssets
       .attr('controls', true);
   };
 
   var loadVideos = function() {
     mediaAssets.each(function() {
       this.load();
+    });
+  };
+
+  var videoDimensionsFix = function() {
+    var videoRatio = 410 / 960;
+    mediaAssets.filter('video').each(function() {
+      var video = $(this);
+      video.css('min-height', viewport.getWidth() * videoRatio);
     });
   };
 
@@ -190,12 +197,16 @@ define([
     parallaxBackgrounds = $('.text-over-bg-image');
 
     updateMediaSources();
-    addMediaControls();
+
+    if (settings.canAutoplay) {
+      addMediaControls(mediaContainers);
+    }
 
     if (!settings.canAutoplay) {
       $('body').addClass('no-autoplay');
       delegateToNativeMediaControls();
       loadVideos();
+      videoDimensionsFix();
     }
 
     setBindings();

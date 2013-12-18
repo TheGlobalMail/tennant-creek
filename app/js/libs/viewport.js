@@ -52,6 +52,10 @@ define([
     return height;
   };
 
+  var getWidth = function() {
+    return window.innerWidth;
+  };
+
   var getOffset = function(element) {
     // Returns a superset of jQuery(element).offset
 
@@ -139,6 +143,7 @@ define([
     setViewport: setViewport,
     getScrollY: getScrollY,
     getHeight: getHeight,
+    getWidth: getWidth,
     getOffset: getOffset
   };
 });
