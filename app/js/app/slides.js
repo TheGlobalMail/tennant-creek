@@ -1,12 +1,13 @@
 define([
   'jquery',
   'lodash',
+  'settings',
   'scroll',
   'viewport',
   './media',
   'mediaUtils',
   'scrollTo'
-], function($, _, scroll, viewport, media, mediaUtils, scrollTo) {
+], function($, _, settings, scroll, viewport, media, mediaUtils, scrollTo) {
 
   var slideContainers;
   var slides;
@@ -30,7 +31,7 @@ define([
       slides.each(function() {
         var slide = $(this);
         var height;
-        if (slide.hasClass('opening-slide')) {
+        if (settings.canAutoplay && slide.hasClass('opening-slide')) {
           // Buffer the first slide
           height = slideHeight * 1.5;
           slide.find('.text').css('top', slideHeight);
@@ -207,18 +208,11 @@ define([
     });
   };
 
-  var bindScrollPrompt = function() {
-    scrollPrompt.on('click', function() {
-      var scrollPromptOffset = viewport.getOffset(scrollPrompt);
-      var scrollPosition = scrollPromptOffset.bottom - 20;
-      $.scrollTo(scrollPosition, 750);
-    });
-  };
-
   var setBindings = function() {
-    bindSlideContainers();
-    bindSlideText();
-    bindScrollPrompt();
+    if (settings.canAutoplay) {
+      bindSlideContainers();
+      bindSlideText();
+    }
 
     $(window).on('resize', _.debounce(sizeSlideContainers, 100));
   };

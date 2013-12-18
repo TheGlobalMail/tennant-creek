@@ -114,7 +114,7 @@ define([
       var hasPlayed = false;
       var isAutoplay = container.hasClass('autoplay-when-visible');
 
-      if (isAutoplay && settings.jsCanAutoplayMedia) {
+      if (isAutoplay && settings.canAutoplay) {
         scroll.on(container, {
           contained: function() {
             if (media.paused && !hasPlayed) {
@@ -167,6 +167,16 @@ define([
     });
   };
 
+  var delegateToNativeMediaControls = function() {
+    mediaAssets.filter('video').attr('controls', true);
+  };
+
+  var loadVideos = function() {
+    mediaAssets.filter('video').each(function() {
+      this.load();
+    });
+  };
+
   var setBindings = function() {
     bindMedia();
   };
@@ -179,6 +189,12 @@ define([
 
     updateMediaSources();
     addMediaControls();
+
+    if (!settings.canAutoplay) {
+      $('body').addClass('no-autoplay');
+      delegateToNativeMediaControls();
+      loadVideos();
+    }
 
     setBindings();
 

@@ -9,7 +9,7 @@ define(function() {
     debugAnalytics: false,
     // If JS can control the initial play of media elements. This is
     // likely to be `true` on desktop and `false` on mobile devices.
-    jsCanAutoplayMedia: (function() {
+    canAutoplay: (function() {
       var video = document.createElement('video');
       video.play();
       return !video.paused;
@@ -40,6 +40,11 @@ define(function() {
   ) {
     // Log events that we're tracking on Google Analytics
     settings.debugAnalytics = true;
+  }
+
+  if (location.search.indexOf('no-autoplay') != -1) {
+    // Force autoplay off
+    settings.canAutoplay = false;
   }
 
   return settings;
