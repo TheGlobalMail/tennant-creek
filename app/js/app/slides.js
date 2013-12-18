@@ -15,7 +15,6 @@ define([
   var fixedHeaderHeight;
   var slideshowBackground;
   var scrollPrompt;
-  var openingSlide;
 
   var getSlideshowBackgroundColour = function(opacity) {
     return 'rgba(30, 30, 30, ' + opacity + ')';
@@ -211,9 +210,8 @@ define([
 
   var bindScrollPrompt = function() {
     scrollPrompt.on('click', function() {
-      var openingTextOffset = viewport.getOffset(openingSlide.find('.text'));
       var scrollPromptOffset = viewport.getOffset(scrollPrompt);
-      var scrollPosition = scrollPromptOffset.bottom - (window.innerWidth - openingTextOffset.right);
+      var scrollPosition = scrollPromptOffset.bottom - 20;
       $.scrollTo(scrollPosition, 750);
     });
   };
@@ -232,7 +230,6 @@ define([
     slidesText = slides.find('.text');
     slideshowBackground = $('.slideshow-background');
     scrollPrompt = $('.scroll-prompt');
-    openingSlide = $('.opening-slide');
 
     fixedHeaderHeight = $('.navbar').outerHeight();
 
