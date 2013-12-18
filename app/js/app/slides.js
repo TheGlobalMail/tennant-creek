@@ -5,9 +5,8 @@ define([
   'viewport',
   './media',
   'mediaUtils',
-  'events',
   'scrollTo'
-], function($, _, scroll, viewport, media, mediaUtils, events, scrollTo) {
+], function($, _, scroll, viewport, media, mediaUtils, scrollTo) {
 
   var slideContainers;
   var slides;
@@ -194,11 +193,11 @@ define([
           background.css('opacity', 1);
           otherBackgrounds.each(function() {
             var otherBackground = $(this);
+            otherBackground.css('opacity', 0);
             var otherVideo = otherBackground.find('video').get(0);
             if (otherVideo) {
               media.pauseMedia(otherVideo);
             }
-            otherBackground.css('opacity', 0);
           });
         },
         exit: function() {
