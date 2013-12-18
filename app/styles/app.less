@@ -616,7 +616,8 @@ article {
   transition: opacity 0.5s;
   background: #ddd;
   &.playing,
-  &.played {
+  &.played,
+  .no-autoplay & {
     opacity: 1;
   }
   .text-over-bg-image & {

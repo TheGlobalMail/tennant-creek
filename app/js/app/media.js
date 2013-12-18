@@ -168,11 +168,13 @@ define([
   };
 
   var delegateToNativeMediaControls = function() {
-    mediaAssets.filter('video').attr('controls', true);
+    $('slide-containers')
+      .find('video')
+      .attr('controls', true);
   };
 
   var loadVideos = function() {
-    mediaAssets.filter('video').each(function() {
+    mediaAssets.each(function() {
       this.load();
     });
   };
