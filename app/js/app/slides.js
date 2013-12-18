@@ -25,7 +25,6 @@ define([
     slideContainers.each(function() {
       var container = $(this);
       var slides = container.find('.slide');
-      var backgrounds = container.find('.background');
       var totalSlideHeight = 0;
 
       slides.each(function() {

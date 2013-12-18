@@ -9,6 +9,8 @@ define([
   var slideContainers;
   var articleFooter;
   var fixedHeaderHeight;
+  var headline;
+  var scrollPrompt;
 
   var sizeFooter = function() {
     articleFooter.css('height', window.innerHeight - fixedHeaderHeight);
@@ -47,12 +49,22 @@ define([
   };
 
   var setBindings = function() {
+    scroll.on(headline, {
+      enter: function() {
+        scrollPrompt.removeClass('fade-out');
+      },
+      exit: function() {
+        scrollPrompt.addClass('fade-out');
+      }
+    });
     $(window).on('resize', _.debounce(sizeFooter, 100))
   };
 
   var init = function() {
     slideContainers = $('.slide-container');
     articleFooter = $('.article-footer');
+    headline = $('.headline');
+    scrollPrompt = $('.scroll-prompt');
 
     fixedHeaderHeight = $('.navbar').outerHeight();
 
