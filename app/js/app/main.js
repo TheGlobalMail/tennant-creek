@@ -44,9 +44,11 @@ define([
     layout.init();
     media.init();
     slides.init();
-    scroll.init();
 
-    events.trigger('main:ready');
+    _.defer(function() {
+      scroll.init();
+      events.trigger('main:ready');
+    })
   };
 
   return {
