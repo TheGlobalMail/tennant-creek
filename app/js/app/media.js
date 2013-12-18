@@ -50,6 +50,17 @@ define([
   };
 
   var playMedia = function(element) {
+
+    // Pause any other playing media
+    var media = $(element);
+    if (media.is('audio')) {
+      mediaAssets.filter('audio').each(function() {
+        if (!this.paused) {
+          this.pause();
+        }
+      });
+    }
+
     mediaUtils.play(element);
 
     loadNextPrevMediaAssets(element);
