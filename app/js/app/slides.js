@@ -2,16 +2,20 @@ define([
   'jquery',
   'lodash',
   'scroll',
+  'viewport',
   './media',
   'mediaUtils',
-  'events'
-], function($, _, scroll, media, mediaUtils, events) {
+  'events',
+  'scrollTo'
+], function($, _, scroll, viewport, media, mediaUtils, events, scrollTo) {
 
   var slideContainers;
   var slides;
   var slidesText;
   var fixedHeaderHeight;
   var slideshowBackground;
+  var scrollPrompt;
+  var openingSlide;
 
   var getSlideshowBackgroundColour = function(opacity) {
     return 'rgba(30, 30, 30, ' + opacity + ')';
@@ -32,6 +36,9 @@ define([
           // Buffer the first slide
           height = slideHeight * 1.5;
           slide.find('.text').css('top', slideHeight);
+          scrollPrompt.css({
+            'top': slideHeight - scrollPrompt.outerHeight()
+          });
           // Need to bump the z-index due to the pause
           // before the text enters the viewport
           slide.find('.background').css('z-index', 1);
@@ -202,9 +209,19 @@ define([
     });
   };
 
+  var bindScrollPrompt = function() {
+    scrollPrompt.on('click', function() {
+      var openingTextOffset = viewport.getOffset(openingSlide.find('.text'));
+      var scrollPromptOffset = viewport.getOffset(scrollPrompt);
+      var scrollPosition = scrollPromptOffset.bottom - (window.innerWidth - openingTextOffset.right);
+      $.scrollTo(scrollPosition, 750);
+    });
+  };
+
   var setBindings = function() {
     bindSlideContainers();
     bindSlideText();
+    bindScrollPrompt();
 
     $(window).on('resize', _.debounce(sizeSlideContainers, 100));
   };
@@ -214,6 +231,8 @@ define([
     slides = slideContainers.find('.slide');
     slidesText = slides.find('.text');
     slideshowBackground = $('.slideshow-background');
+    scrollPrompt = $('.scroll-prompt');
+    openingSlide = $('.opening-slide');
 
     fixedHeaderHeight = $('.navbar').outerHeight();
 

@@ -129,7 +129,8 @@ define([
       viewportMiddle: viewportMiddle,
       viewportBottom: viewportBottom,
       elementTop: elementTop,
-      elementBottom: elementBottom
+      elementBottom: elementBottom,
+      scrollY: scrollY
     };
   };
 
