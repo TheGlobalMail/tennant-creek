@@ -64,7 +64,7 @@ define([
           background.height(backgroundHeight);
         }
         slide.height(height);
-        totalSlideHeight += height;
+        totalSlideHeight += height + slide.css('margin-bottom');
       });
 
       container.height(totalSlideHeight);
