@@ -3,8 +3,9 @@ define([
   'lodash',
   'scroll',
   'events',
-  'viewport'
-], function($, _, scroll, events) {
+  'viewport',
+  'settings'
+], function($, _, scroll, events, settings) {
 
   var slideContainers;
   var articleFooter;
@@ -48,7 +49,7 @@ define([
     });
   };
 
-  var setBindings = function() {
+  var bindScrollPromptFadeOut = function() {
     scroll.on(headline, {
       enter: function() {
         scrollPrompt.removeClass('fade-out');
@@ -57,6 +58,12 @@ define([
         scrollPrompt.addClass('fade-out');
       }
     });
+  };
+
+  var setBindings = function() {
+    if (settings.canAutoplay) {
+      bindScrollPromptFadeOut();
+    }
     $(window).on('resize', _.debounce(sizeFooter, 100))
   };
 
@@ -69,7 +76,6 @@ define([
     fixedHeaderHeight = $('.navbar').outerHeight();
 
     wordsInSpans();
-    // lettersInSpans();
     sizeFooter();
 
     setBindings();
