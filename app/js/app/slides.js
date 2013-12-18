@@ -19,14 +19,31 @@ define([
 
   var sizeSlideContainers = function() {
     var slideHeight = window.innerHeight - fixedHeaderHeight;
-
     slideContainers.each(function() {
       var container = $(this);
       var slides = container.find('.slide');
       var backgrounds = container.find('.background');
+      var totalSlideHeight = 0;
 
-      container.height(slideHeight * slides.length);
-      slides.height(slideHeight);
+      slides.each(function() {
+        var slide = $(this);
+        var height;
+        if (slide.hasClass('opening-slide')) {
+          // Buffer the first slide
+          height = slideHeight * 1.5;
+          slide.find('.text').css('top', slideHeight);
+          // Need to bump the z-index due to the pause
+          // before the text enters the viewport
+          slide.find('.background').css('z-index', 1);
+        } else {
+          height = slideHeight;
+          slide.find('.background').css('z-index', 0);
+        }
+        slide.height(height);
+        totalSlideHeight += height;
+      });
+
+      container.height(totalSlideHeight);
       backgrounds.height(slideHeight)
     });
   };
@@ -78,21 +95,23 @@ define([
           // Enter slideshow transition
           if (position.intersectsMiddle) {
             backgroundTinted = true;
+            // Enter transition complete
             if (intersectsTopAndBottom) {
               slideshowBackground.css({
                 'background-color': getSlideshowBackgroundColour(1),
                 'z-index': 1
               });
+            // Enter transition in progress
             } else {
               var top = 0;
               var bottom;
               var elementPosition;
               var percentage;
               if (position.intersectsTop) {
-                bottom = (position.viewportBottom - position.viewportMiddle) / 2;
+                bottom = (position.viewportBottom - position.viewportMiddle) * 0.75;
                 elementPosition = position.elementBottom - position.viewportMiddle;
               } else if (position.intersectsBottom) {
-                bottom = (position.viewportMiddle - position.viewportTop) / 2;
+                bottom = (position.viewportMiddle - position.viewportTop) * 0.75;
                 elementPosition = position.viewportMiddle - position.elementTop;
               }
               percentage = elementPosition / (bottom - top);
@@ -101,7 +120,7 @@ define([
                 'z-index': 1
               });
             }
-            // Exit slideshow transition
+          // Exit slideshow transition
           } else {
             backgroundTinted = false;
             slideshowBackground.css({
