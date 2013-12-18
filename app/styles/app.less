@@ -375,6 +375,29 @@ article {
     left: 0;
     right: 0;
   }
+  .no-autoplay &.has-video {
+    .text-container,
+    .background,
+    .media-container,
+    video {
+      position: static;
+    }
+    .media-container {
+      padding-bottom: 2em;
+      background: black;
+    }
+    .text-container {
+      height: auto;
+      background: black;
+      .text {
+        position: relative;
+        top: auto;
+        bottom: auto;
+        left: auto;
+        right: auto;
+      }
+    }
+  }
   .text-and-bg-position-classes(@slideTextWidth);
   .text-container {
     position: absolute;

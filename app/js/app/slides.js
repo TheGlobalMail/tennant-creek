@@ -27,14 +27,28 @@ define([
       var slides = container.find('.slide');
       var backgrounds = container.find('.background');
       var totalSlideHeight = 0;
+      var backgroundHeight = slideHeight;
 
       slides.each(function() {
         var slide = $(this);
         var height;
-        if (settings.canAutoplay && slide.hasClass('opening-slide')) {
+        var slideTextContainer = slide.find('.text-container');
+        var slideText = slide.find('.text');
+        var mediaContainer = slide.find('.media-container');
+        var slideVideo = slide.find('video');
+        var background = slide.find('.video');
+
+        if (slideVideo.length) {
+          slide.addClass('has-video');
+          backgroundHeight = null;
+        }
+        if (!settings.canAutoplay && slideVideo.length) {
+          height = mediaContainer.outerHeight() + slideText.outerHeight();
+          mediaContainer.after(slideTextContainer);
+        } else if (settings.canAutoplay && slide.hasClass('opening-slide')) {
           // Buffer the first slide
           height = slideHeight * 1.5;
-          slide.find('.text').css('top', slideHeight);
+          slideText.css('top', slideHeight);
           scrollPrompt.css({
             'top': slideHeight - scrollPrompt.outerHeight()
           });
@@ -45,12 +59,15 @@ define([
           height = slideHeight;
           slide.find('.background').css('z-index', 0);
         }
+
+        if (backgroundHeight) {
+          background.height(backgroundHeight);
+        }
         slide.height(height);
         totalSlideHeight += height;
       });
 
       container.height(totalSlideHeight);
-      backgrounds.height(slideHeight)
     });
   };
 
