@@ -5,9 +5,8 @@ define([
   'viewport',
   './media',
   'mediaUtils',
-  'events',
   'scrollTo'
-], function($, _, scroll, viewport, media, mediaUtils, events, scrollTo) {
+], function($, _, scroll, viewport, media, mediaUtils, scrollTo) {
 
   var slideContainers;
   var slides;
@@ -15,7 +14,6 @@ define([
   var fixedHeaderHeight;
   var slideshowBackground;
   var scrollPrompt;
-  var openingSlide;
 
   var getSlideshowBackgroundColour = function(opacity) {
     return 'rgba(30, 30, 30, ' + opacity + ')';
@@ -195,11 +193,11 @@ define([
           background.css('opacity', 1);
           otherBackgrounds.each(function() {
             var otherBackground = $(this);
+            otherBackground.css('opacity', 0);
             var otherVideo = otherBackground.find('video').get(0);
             if (otherVideo) {
               media.pauseMedia(otherVideo);
             }
-            otherBackground.css('opacity', 0);
           });
         },
         exit: function() {
@@ -211,9 +209,8 @@ define([
 
   var bindScrollPrompt = function() {
     scrollPrompt.on('click', function() {
-      var openingTextOffset = viewport.getOffset(openingSlide.find('.text'));
       var scrollPromptOffset = viewport.getOffset(scrollPrompt);
-      var scrollPosition = scrollPromptOffset.bottom - (window.innerWidth - openingTextOffset.right);
+      var scrollPosition = scrollPromptOffset.bottom - 20;
       $.scrollTo(scrollPosition, 750);
     });
   };
@@ -232,7 +229,6 @@ define([
     slidesText = slides.find('.text');
     slideshowBackground = $('.slideshow-background');
     scrollPrompt = $('.scroll-prompt');
-    openingSlide = $('.opening-slide');
 
     fixedHeaderHeight = $('.navbar').outerHeight();
 

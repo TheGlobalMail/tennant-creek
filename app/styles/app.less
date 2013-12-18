@@ -373,7 +373,8 @@ article {
   overflow: hidden;
   &.opening-slide .text {
     position: absolute;
-    right: 1em;
+    left: 0;
+    right: 0;
   }
   .text-and-bg-position-classes(@slideTextWidth);
   .text-container {
@@ -661,6 +662,9 @@ article {
     opacity: 1;
     transition: opacity 0.5s;
   }
+  .slide-container & {
+    display: none;
+  }
 }
 
 .progress-bar {
@@ -672,10 +676,6 @@ article {
   width: 100%;
   background: transparent;
   transition: opacity 0.5s;
-  .playing &,
-  .played & {
-  //   opacity: 1;
-  }
   .progress {
     position: absolute;
     left: 0;
@@ -687,5 +687,10 @@ article {
     box-shadow: 0 -1px 3px #000;
     transition: width: 0.01s;
     width: 0;
+  }
+  .slide-container & {
+    .progress {
+      opacity: 0.2;
+    }
   }
 }
