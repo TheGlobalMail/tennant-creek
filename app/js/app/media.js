@@ -155,6 +155,14 @@ define([
 
       $(media).on('ended', function() {
         container.removeClass('playing');
+        if (autoplayMedia.has(this).length && $(this).is('video')) {
+          // Revert the video back to the poster once it has ended
+          var video = $(this);
+          video.height(video.outerHeight());
+          requestAnimationFrame(function() {
+            video[0].load();
+          })
+        }
       });
     });
   };
