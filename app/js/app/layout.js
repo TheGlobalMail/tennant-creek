@@ -3,7 +3,6 @@ define([
   'lodash',
   'scroll',
   'events',
-  'viewport',
   'settings'
 ], function($, _, scroll, events, settings) {
 
