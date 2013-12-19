@@ -225,15 +225,10 @@ define([
     });
   };
 
-  var addLoopToSlideVideos = function() {
-    slideContainers.find('video').attr('loop', true);
-  };
-
   var setBindings = function() {
     if (settings.canAutoplay) {
       bindSlideContainers();
       bindSlideText();
-      addLoopToSlideVideos();
     }
 
     $(window).on('resize', _.debounce(sizeSlideContainers, 100));
