@@ -205,6 +205,15 @@ define([
     });
   };
 
+  var bindMediaLoadingComplete = function() {
+    // Update the scroll positions once all the media has been loaded
+    var onMediaLoadingComplete = _.after(mediaAssets.length, scroll.updateElements);
+    mediaAssets.each(function() {
+      var media = $(this);
+      media.on('canplaythrough', onMediaLoadingComplete)
+    });
+  };
+
   var setBindings = function() {
     bindMedia();
   };
@@ -215,7 +224,10 @@ define([
     mediaContainers = $('.media-container').add(autoplayMedia);
     parallaxBackgrounds = $('.text-over-bg-image');
 
+    bindMediaLoadingComplete();
+
     updateMediaSources();
+    loadVideos();
 
     if (settings.canAutoplay) {
       addMediaControls(mediaContainers);
@@ -224,7 +236,6 @@ define([
     if (!settings.canAutoplay) {
       $('body').addClass('no-autoplay');
       delegateToNativeMediaControls();
-      loadVideos();
       videoDimensionsFix();
     }
 
