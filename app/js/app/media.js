@@ -119,7 +119,7 @@ define([
   var bindMedia = function() {
     _.each(mediaContainers, function(element) {
       var container = $(element);
-      var media = container.find('video, audio')[0];
+      var media = container.find('video, audio').get(0);
       var controls = container.find('.controls');
       var progressBar = container.find('.progress-bar');
       var hasPlayed = false;
@@ -155,13 +155,13 @@ define([
 
       $(media).on('ended', function() {
         container.removeClass('playing');
-        if (autoplayMedia.has(this).length && $(this).is('video')) {
-          // Revert the video back to the poster once it has ended
-          var video = $(this);
-          video.height(video.outerHeight());
+        var $media = $(this);
+        if ($media.data('on-ended') === 'poster') {
+          // Revert the media back to the poster once it has ended
+          $media.height($media.outerHeight());
           requestAnimationFrame(function() {
-            video[0].load();
-          })
+            media.load();
+          });
         }
       });
     });
