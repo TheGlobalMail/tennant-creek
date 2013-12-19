@@ -206,11 +206,9 @@ define([
   };
 
   var bindMediaLoadingComplete = function() {
-    // Update the scroll positions once all the media has been loaded
-    var onMediaLoadingComplete = _.after(mediaAssets.length, scroll.updateElements);
     mediaAssets.each(function() {
       var media = $(this);
-      media.on('canplaythrough', onMediaLoadingComplete)
+      media.on('canplaythrough', scroll.updateElements)
     });
   };
 
