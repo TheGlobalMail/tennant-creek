@@ -20,7 +20,7 @@ define([
   ];
 
   var loadingStageComplete = _.after(loadingStateUntil.length, function() {
-    scroll.checkElements();
+    _.defer(scroll.init);
     body.removeClass('loading');
     events.trigger('loading:complete');
   });
@@ -45,10 +45,7 @@ define([
     media.init();
     slides.init();
 
-    _.defer(function() {
-      scroll.init();
-      events.trigger('main:ready');
-    })
+    events.trigger('main:ready');
   };
 
   return {
