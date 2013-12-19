@@ -111,13 +111,12 @@
 // Phones
 @media only screen and (max-width: @smallerWidth) {
 
-	body.loading .pre-load-background {
-		background-size: 180px auto;
-	}
+	body.loading .pre-load-background { background-size: 180px auto; }
 
 	body.no-autoplay {
 	  .scroll-prompt {
 	    position: absolute;
+	    bottom: 7.5em;
 	    font-size: 0.5em;
 	    .scroll-icon {
 	    	display: inline;
@@ -207,12 +206,11 @@
 			.child {
 				width: 100%;
 				float: none !important;
-				&:first-child {
-					margin-bottom: 20px;
-				}
+				&:first-child { margin-bottom: 20px; }
 			}
 		}
 	}
+
 	.article-footer .credits {
 		margin: 0;
 		padding: 20px;
@@ -220,16 +218,22 @@
 		li {
 			font-size: 0.8em;
 			line-height: 1.4;
-			// display: inline;
-			&:first-child {
-				display: none;
-			}
-			&:after {
-				// content: ' · ';
-			}
+			&:first-child { display: none; }
 		}
 	}
 }
+
+// little tweak for landscape phones
+@media only screen and (max-height: 330px) {
+	.article-header .slide:first-child .headline .word { 
+		display: inline-block; 
+		&:nth-child(2) {
+			padding: 0 0.2em;
+			.char { padding: 0 0.1em; }
+		}
+	}
+}
+
 
 // FF specific
 @-moz-document url-prefix() {
