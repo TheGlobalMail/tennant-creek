@@ -683,12 +683,37 @@ article {
       display: none;
     }
   }
-  .playing:hover & {
-    opacity: 1;
-    transition: opacity 0.5s;
+  .played:not(.playing) & {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    .play {
+      font-size: 100px;
+    }
   }
   .slide-container & {
     display: none;
+  }
+}
+
+.playing {
+  .controls,
+  .progress-bar {
+    opacity: 0.35;
+    transition: opacity 3s;
+  }
+}
+
+.playing:hover,
+.played:hover {
+  .controls,
+  .progress-bar {
+    opacity: 1;
+    transition: opacity 0.5s;
   }
 }
 
@@ -700,21 +725,20 @@ article {
   height: @progressBarHeight;
   width: 100%;
   background: transparent;
-  transition: opacity 0.5s;
+  opacity: 1;
   .progress {
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
     background: #fff;
-    opacity: 0.4;
     border-radius: 10px;
     box-shadow: 0 -1px 3px #000;
     transition: width: 0.01s;
     width: 0;
   }
   .slide-container & {
-    .progress { opacity: 0.2; }
+    opacity: 0.2;
   }
 }
 
