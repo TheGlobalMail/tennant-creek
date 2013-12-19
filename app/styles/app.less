@@ -394,6 +394,7 @@ article {
       height: auto;
       background: black;
       .text {
+        .clearfix;
         position: relative;
         top: auto;
         bottom: auto;
@@ -743,6 +744,16 @@ body.no-autoplay {
   }
 
   .slide {
+    &.has-video {
+      overflow: visible; 
+      .background {
+        overflow: visible; 
+      }
+      .media-container + .text-container {
+        .text { padding-bottom: 1px; }
+      }
+
+    }
     &.text-bottom-left .text   { position: absolute; top: auto; bottom: 1em; left: 1em; }
     &.text-bottom-right .text  { position: absolute; top: auto; bottom: 1em; right: 1em; }
     &.text-bottom-center .text { position: absolute; top: auto; bottom: 1em; left: 50%; margin-left: @textWidth * -0.5; }
