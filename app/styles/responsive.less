@@ -16,6 +16,9 @@
   @media only screen and (max-width: @bigWidth)     { background-image: url("@{imgBase}4.@{extension}"); }
   @media only screen and (max-width: @medWidth)     { background-image: url("@{imgBase}3.@{extension}"); }
   @media only screen and (max-width: @smallWidth)   { background-image: url("@{imgBase}2.@{extension}"); }
+  @media only screen and (max-width: @bigWidth) and (-webkit-min-device-pixel-ratio: 2)   	{ background-image: url("@{imgBase}4.@{extension}"); }
+  @media only screen and (max-width: @smallWidth) and (-webkit-min-device-pixel-ratio: 2)   { background-image: url("@{imgBase}4.@{extension}"); }
+  @media only screen and (max-width: @smallerWidth) and (-webkit-min-device-pixel-ratio: 2) { background-image: url("@{imgBase}2.@{extension}"); }
 }
 
 .responsiveBGInArticle(@imgName, @extension: 'jpg') {
@@ -54,6 +57,13 @@
 
 // Portrait tablets
 @media only screen and (max-width: @medWidth) {
+	.navbar.special-feature {
+		.brand.brand-center {
+			float: left;
+			margin-left: 20px;
+		}
+	}
+
 	.article-section > blockquote p,
 	.article-section p.drop-cap,
 	.quote-with-portrait .quote-text,
@@ -61,6 +71,10 @@
 	 	font-size: 1.4em;
 	 	line-height: 1.1;
 	}
+
+  .article-section .related {
+    max-width: @textWidth * 0.66;
+  }
 }
 
 // Big phones, small tablets
@@ -74,8 +88,8 @@
 	.quote-with-portrait-wrapper {
 		max-width: @textWidth;
 		box-sizing: border-box;
-		padding: 0 0;
-		margin: 1em 20px;
+		padding: 0 20px;
+		margin: 1em auto;
 		.quote-rules, .portrait {
 			position: relative;
 			width: 100%;
@@ -103,6 +117,11 @@
 
 // Phones
 @media only screen and (max-width: @smallerWidth) {
+
+	body.loading .pre-load-background {
+		background-size: 180px auto;
+	}
+
 	body.no-autoplay {
 	  .scroll-prompt {
 	    position: absolute;
@@ -114,6 +133,21 @@
 	    	opacity: 1;
 	    }
 	  }
+	}
+
+	.navbar.special-feature {
+		// position: static;
+		.brand.brand-center {
+			width: 207px;
+			overflow: hidden;
+			margin-left: auto;
+			margin-right: auto;
+			float: none;
+			img {
+				width: 400px;
+				max-width: none;
+			}
+		}
 	}
 
 	.article-header {
@@ -154,6 +188,7 @@
 	}
 
 	.article-section > p { font-size: 16px; line-height: 1.4; }
+	.article-section > p:last-child { margin-bottom: 40px; }
 
 	.article-section > blockquote p,
 	.article-section p.drop-cap,
@@ -171,6 +206,22 @@
 		&.full-width {
 			padding-left: 0 !important;
 			padding-right: 0 !important;
+		}
+	}
+	.article-footer .credits {
+		margin: 0;
+		padding: 20px;
+		width: 100%;
+		li {
+			font-size: 0.8em;
+			line-height: 1.4;
+			// display: inline;
+			&:first-child {
+				display: none;
+			}
+			&:after {
+				// content: ' · ';
+			}
 		}
 	}
 }
