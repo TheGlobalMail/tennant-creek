@@ -57,12 +57,7 @@
 
 // Portrait tablets
 @media only screen and (max-width: @medWidth) {
-	.navbar.special-feature {
-		.brand.brand-center {
-			float: left;
-			margin-left: 20px;
-		}
-	}
+	.navbar.special-feature .brand.brand-center { float: left; margin-left: 20px; }
 
 	.article-section > blockquote p,
 	.article-section p.drop-cap,
@@ -72,9 +67,7 @@
 	 	line-height: 1.1;
 	}
 
-  .article-section .related {
-    max-width: @textWidth * 0.66;
-  }
+  .article-section .related { max-width: @textWidth * 0.66; }
 }
 
 // Big phones, small tablets
@@ -125,7 +118,6 @@
 	body.no-autoplay {
 	  .scroll-prompt {
 	    position: absolute;
-	    // bottom: 11em;
 	    font-size: 0.5em;
 	    .scroll-icon {
 	    	display: inline;
@@ -136,18 +128,21 @@
 	}
 
 	.navbar.special-feature {
-		// position: static;
 		.brand.brand-center {
 			width: 207px;
 			overflow: hidden;
 			margin-left: auto;
 			margin-right: auto;
 			float: none;
-			img {
-				width: 400px;
-				max-width: none;
-			}
+			img { width: 400px; max-width: none; }
 		}
+	}
+
+	.article-section > blockquote p,
+	.article-section p.drop-cap,
+	.quote-with-portrait .quote-text,
+	.slide .text-container .text {
+	 	font-size: 1.1em !important;
 	}
 
 	.article-header {
@@ -174,17 +169,16 @@
 				&:before, &:after { display: block; visibility: hidden; }
 			} 
 		}
+	}
 
-		.slide {
-			.text-container .text {
-				max-width: 90% !important;
-				left: 0 !important;
-				right: 0 !important;
-				&:before, &:after { height: 4px; }
-				p { padding: 12px 0 0px 0; }
-			}
+	.slide {
+		.text-container .text {
+			max-width: 90% !important;
+			left: 0 !important;
+			right: 0 !important;
+			&:before, &:after { height: 4px; }
+			p { padding: 12px 0 0px 0; }
 		}
-
 	}
 
 	.article-section > p { font-size: 16px; line-height: 1.4; }
@@ -194,9 +188,11 @@
 	.article-section p.drop-cap,
 	.quote-with-portrait .quote-text,
 	.slide .text-container .text {
-	 	font-size: 1.2em;
+	 	font-size: 1em !important;
 	 	line-height: 1.1;
 	}
+
+	.article-section .caption { font-size: 0.6em !important; line-height: 1.2; }
 
 	.article-section .related {
 		float: none !important;
@@ -206,6 +202,15 @@
 		&.full-width {
 			padding-left: 0 !important;
 			padding-right: 0 !important;
+		}
+		&.two-up {
+			.child {
+				width: 100%;
+				float: none !important;
+				&:first-child {
+					margin-bottom: 20px;
+				}
+			}
 		}
 	}
 	.article-footer .credits {
