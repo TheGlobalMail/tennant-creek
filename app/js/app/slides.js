@@ -202,8 +202,11 @@ define([
         },
         contained: function() {
           if (video && !hasPlayed) {
-            media.playMedia(video);
-            hasPlayed = true;
+            var videoPosition = viewport.getPositionOf(video);
+            if (videoPosition.intersectsMiddle) {
+              media.playMedia(video);
+              hasPlayed = true;
+            }
           }
           background.css('opacity', 1);
           otherBackgrounds.each(function() {
