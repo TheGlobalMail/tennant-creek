@@ -40,19 +40,13 @@
 
 // iPad Landscape & smaller screens
 @media only screen and (max-width: @bigWidth) {
-	.article-section > p {
-		font-size: 18px; 
-	}
+	.article-section > p { font-size: 18px; }
 	.article-section > blockquote p,
 	.article-section p.drop-cap,
 	.quote-with-portrait .quote-text,
-	.slide .text-container .text {
-	 	font-size: 1.6em;
-	}
+	.slide .text-container .text { font-size: 1.6em; }
 
-	.slide .text-container .text {
-		max-width: @textWidth * 0.6;
-	}
+	.slide .text-container .text { max-width: @textWidth * 0.6; }
 }
 
 // Portrait tablets
@@ -127,6 +121,7 @@
 	}
 
 	.navbar.special-feature {
+		position: relative;
 		.brand.brand-center {
 			width: 207px;
 			overflow: hidden;
@@ -140,9 +135,9 @@
 	.article-section > blockquote p,
 	.article-section p.drop-cap,
 	.quote-with-portrait .quote-text,
-	.slide .text-container .text {
-	 	font-size: 1.1em !important;
-	}
+	.slide .text-container .text { font-size: 1.1em !important; }
+
+	#main { margin-top: 0; }
 
 	.article-header {
 		margin-bottom: 2em;
@@ -165,7 +160,7 @@
 					width: 0;
 					&:after { display: inline; content:"\a"; white-space: pre; }
 				}
-				&:before, &:after { display: block; visibility: hidden; }
+				&:before, &:after { display: none; }
 			} 
 		}
 	}
@@ -232,14 +227,19 @@
 			.char { padding: 0 0.1em; }
 		}
 	}
-}
-
-
-// FF specific
-@-moz-document url-prefix() {
-  @media only screen and (max-width: @smallerWidth) {
-
-  }
+	.article-header {
+		margin-bottom: 2em;
+		.slide:first-child {
+			.byline {
+				.sep {
+					visibility: visible; 
+					width: auto;
+					&:after { display: none; }
+				}
+				&:before, &:after { visibility: hidden; }
+			} 
+		}
+	}
 }
 
 // responsive images

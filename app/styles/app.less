@@ -394,6 +394,7 @@ article {
       height: auto;
       background: black;
       .text {
+        .clearfix;
         position: relative;
         top: auto;
         bottom: auto;
@@ -460,7 +461,7 @@ article {
     padding-left: 20px;
     padding-right: 20px;
     &:last-child {
-      margin-bottom: 80px;
+      margin-bottom: 40px;
     }
     &.drop-cap {
       font-weight: normal;
@@ -516,7 +517,7 @@ article {
     }
     &.bigger {
       max-width: none;
-      width: 97%;
+      width: 85%;
       padding: 1em 1.5% 1em 1.5%; 
       margin: 0 auto;
       img { width: 100%; }
@@ -532,6 +533,24 @@ article {
       .left { float: left; }
       .right { float: right; }
     }
+  }
+}
+
+#comments {
+  max-width: @textWidth;
+  padding: 2em 20px 2em 20px;
+  box-sizing: border-box; 
+  margin: 0 auto;
+  text-align: center;
+  .topBottomBorder(@highlightColor, #666);
+   margin-bottom: 2em;
+
+  .comments-link {
+    .btn;
+    font-size: 1em;
+    margin-top: 2em;
+    padding: 1em 1.5em;
+    .icon { padding-right: 10px; font-size: 130%; }
   }
 }
 
@@ -767,6 +786,16 @@ body.no-autoplay {
   }
 
   .slide {
+    &.has-video {
+      overflow: visible; 
+      .background {
+        overflow: visible; 
+      }
+      .media-container + .text-container {
+        .text { padding-bottom: 1px; }
+      }
+
+    }
     &.text-bottom-left .text   { position: absolute; top: auto; bottom: 1em; left: 1em; }
     &.text-bottom-right .text  { position: absolute; top: auto; bottom: 1em; right: 1em; }
     &.text-bottom-center .text { position: absolute; top: auto; bottom: 1em; left: 50%; margin-left: @textWidth * -0.5; }
