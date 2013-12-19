@@ -195,7 +195,7 @@ define([
             var percentage = viewportPosition / (bottom - top);
             background.css('opacity', 1 - percentage);
             nextBackground.css('opacity', percentage);
-            if (nextVideo && nextVideo.paused) {
+            if (percentage >= 0.8 && nextVideo && nextVideo.paused) {
               media.playMedia(nextVideo);
             }
           }
