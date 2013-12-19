@@ -37,11 +37,9 @@ define([
         var background = slide.find('.background');
         var backgroundHeight = slideHeight;
 
-        if (slideVideo.length) {
+        if (!settings.canAutoplay && slideVideo.length) {
           slide.addClass('has-video');
           backgroundHeight = null;
-        }
-        if (!settings.canAutoplay && slideVideo.length) {
           height = mediaContainer.outerHeight() + slideText.outerHeight();
           mediaContainer.after(slideTextContainer);
         } else if (settings.canAutoplay && slide.hasClass('opening-slide')) {
