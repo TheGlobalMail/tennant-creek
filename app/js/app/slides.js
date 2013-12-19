@@ -217,6 +217,9 @@ define([
         },
         exit: function() {
           hasPlayed = false;
+          if (video) {
+            media.fadeOutMedia(video);
+          }
         }
       });
     });

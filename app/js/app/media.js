@@ -236,6 +236,7 @@ define([
   return {
     init: init,
     playMedia: playMedia,
-    pauseMedia: pauseMedia
+    pauseMedia: pauseMedia,
+    fadeOutMedia: fadeOutMedia
   };
 });
