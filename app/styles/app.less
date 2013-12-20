@@ -154,7 +154,7 @@ article {
 .article-header {
   position: relative;
   z-index: 2;
-  margin-bottom: 100px;
+  margin-bottom: 40px;
   .slide {
     color: #fff;
     text-shadow: 0 1px 3px #000;
@@ -537,14 +537,12 @@ article {
 }
 
 #comments {
-  max-width: @textWidth;
-  padding: 2em 0 2em 0;
+  max-width: @textWidth - (20px * 2);
+  padding: 1.7em 0 2em 0;
   box-sizing: border-box; 
-  margin: 0 auto;
+  margin: 4em auto 5em auto;
   text-align: center;
   .topBottomBorder(@highlightColor, #666);
-   margin-bottom: 2em;
-
   .comments-link {
     .btn;
     font-size: 1em;
