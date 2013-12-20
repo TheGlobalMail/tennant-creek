@@ -231,17 +231,21 @@ define([
 
     bindMediaLoadingComplete();
 
-    updateMediaSources();
-    loadVideos();
-
-    if (settings.canAutoplay) {
-      addMediaControls(mediaContainers);
-    }
-
-    if (!settings.canAutoplay) {
+    if (settings.lessThanEqualToIE9) {
       $('body').addClass('no-autoplay');
-      delegateToNativeMediaControls();
-      videoDimensionsFix();
+    } else {
+      updateMediaSources();
+      loadVideos();
+
+      if (settings.canAutoplay) {
+        addMediaControls(mediaContainers);
+      }
+
+      if (!settings.canAutoplay) {
+        $('body').addClass('no-autoplay');
+        delegateToNativeMediaControls();
+        videoDimensionsFix();
+      }
     }
 
     setBindings();
