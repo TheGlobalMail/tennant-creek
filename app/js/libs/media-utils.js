@@ -116,6 +116,9 @@ define([
       } else {
         sound.pause();
         delete sound.__mediaUtilsState__;
+        if (options.callback) {
+          options.callback();
+        }
       }
     };
 

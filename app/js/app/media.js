@@ -79,8 +79,10 @@ define([
     mediaContainers.has(element).removeClass('playing');
   };
 
-  var fadeOutMedia = function(element) {
-    mediaUtils.fadeOut(element);
+  var fadeOutMedia = function(element, callback) {
+    mediaUtils.fadeOut(element, {
+      callback: callback
+    });
     mediaContainers.has(element).removeClass('playing');
   };
 
@@ -134,7 +136,12 @@ define([
             }
           },
           exit: function() {
-            fadeOutMedia(media);
+            if (!media.paused) {
+              // Reset the position to the start
+              fadeOutMedia(media, function() {
+                media.currentTime = 0;
+              });
+            }
             hasPlayed = false;
           }
         });
