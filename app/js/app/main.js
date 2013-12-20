@@ -15,6 +15,7 @@ define([
 
   var loadingStateUntil = [
     'layout:ready',
+    'header-image:ready',
     'media:ready',
     'main:ready'
   ];

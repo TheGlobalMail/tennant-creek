@@ -6,8 +6,9 @@ define([
   'viewport',
   './media',
   'mediaUtils',
-  'scrollTo'
-], function($, _, settings, scroll, viewport, media, mediaUtils, scrollTo) {
+  'scrollTo',
+  'events'
+], function($, _, settings, scroll, viewport, media, mediaUtils, scrollTo, events) {
 
   var slideContainers;
   var slides;
@@ -228,6 +229,15 @@ define([
     });
   };
 
+  var signalLoadOfHeaderImage = function() {
+    var bgImage = $('.background').first().css('background-image');
+    var src = bgImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+    var image = $('<img src="' + src + '">');
+    image.load(function() {
+      events.trigger('header-image:ready');
+    });
+  };
+
   var setBindings = function() {
     if (settings.canAutoplay) {
       bindSlideContainers();
@@ -235,6 +245,8 @@ define([
     }
 
     $(window).on('resize', _.debounce(sizeSlideContainers, 100));
+
+    signalLoadOfHeaderImage();
   };
 
   var init = function() {
