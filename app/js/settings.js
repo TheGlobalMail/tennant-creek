@@ -7,6 +7,11 @@ define(function() {
     debug: false,
     debugEvents: false,
     debugAnalytics: false,
+    lessThanEqualToIE9: (function(){ // Detects IE9 and lower
+      var div = document.createElement('div');
+      div.innerHTML = '<!--[if IE]><i></i><![endif]-->';
+      return div.getElementsByTagName('i').length > 0;
+    }()),
     // If JS can control the initial play of media elements. This is
     // likely to be `true` on desktop and `false` on mobile devices.
     canAutoplay: (function() {
@@ -15,6 +20,10 @@ define(function() {
       return !video.paused;
     })()
   };
+
+  if (settings.lessThanEqualToIE9) {
+    settings.canAutoplay = false;
+  }
 
   if (location.search.indexOf('quiet') != -1) {
     // Suppress sound playback
