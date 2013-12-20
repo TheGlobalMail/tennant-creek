@@ -138,6 +138,7 @@ define([
 
   return {
     load: load,
+    isLoaded: isLoaded,
     play: play,
     pause: pause,
     fadeIn: fadeIn,

@@ -136,7 +136,7 @@ define([
             }
           },
           exit: function() {
-            if (!media.paused) {
+            if (!media.paused && mediaUtils.isLoaded(media)) {
               // Reset the position to the start
               fadeOutMedia(media, function() {
                 media.currentTime = 0;
