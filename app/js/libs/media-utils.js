@@ -1,6 +1,7 @@
 define([
+  'jquery',
   'settings'
-], function(settings) {
+], function($, settings) {
 
   var states = {
     fadeIn: 'fade-in',
@@ -31,6 +32,10 @@ define([
     }
   };
 
+  var isLoaded = function(element) {
+    return element.readyState === 4
+  };
+
   var play = function(element) {
     element = _unwrapElement(element);
     load(element);
@@ -38,6 +43,12 @@ define([
     if (!element.paused) {
       // Already playing
       return;
+    }
+
+    if (!isLoaded(element)) {
+      $(element).on('loadedmetadata', function() {
+        play(element);
+      });
     }
 
     if (element.currentTime > 0) {
