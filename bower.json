@@ -8,6 +8,8 @@
     "requirejs-plugins": "~1.0.2",
     "lodash": "~2.4.1",
     "font-awesome": "latest",
-    "jquery.scrollTo": "~1.4.6"
+    "jquery.scrollTo": "~1.4.6",
+    "fatcontroller": "~0.1.0",
+    "viewport": "~0.1.0"
   }
 }

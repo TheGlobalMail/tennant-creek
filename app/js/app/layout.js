@@ -2,9 +2,9 @@ define([
   'jquery',
   'lodash',
   'scroll',
-  'events',
+  'fc',
   'settings'
-], function($, _, scroll, events, settings) {
+], function($, _, scroll, fc, settings) {
 
   var slideContainers;
   var articleFooter;
@@ -79,7 +79,7 @@ define([
 
     setBindings();
 
-    events.trigger('layout:ready');
+    fc.trigger('layout:ready');
   };
 
   return {

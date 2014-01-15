@@ -15,19 +15,21 @@ require.config({
     scrollTo: {
       deps: ['jquery']
     }
-  }
+  },
+  packages: [{
+    name: 'fc',
+    location: '../components/fatcontroller'
+  }]
 });
 
 require([
   'shims',
   'jquery',
-  'events',
-  './app/main',
-  'settings'
+  'settings',
+  'fc',
+  './app/main'
 ],
-function(shims, $, events, app, settings) {
-  if (settings.debugEvents) {
-    window.fc = events;
-  }
+function(shims, $, settings, fc, app) {
+  fc.debug = settings.debugEvents;
   $(app.init);
 });

@@ -1,10 +1,10 @@
 define([
   'jquery',
   'lodash',
-  'events',
+  'fc',
   'viewport',
   'settings'
-],function($, _, events, viewport, settings) {
+],function($, _, fc, viewport, settings) {
 
   var pointsToTrack = {};
   _.each(_.range(10, 101, 10), function(percentage) {
@@ -29,7 +29,7 @@ define([
   };
 
   var setBindings = function() {
-    events.once('loading:complete', function() {
+    fc.once('loading:complete', function() {
       if (settings.debugAnalytics) {
         console.log('Now tracking for analytics')
       }

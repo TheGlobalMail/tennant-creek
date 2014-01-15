@@ -1,14 +1,14 @@
 define([
   'jquery',
   'lodash',
-  'events',
+  'fc',
   'scroll',
   'viewport',
   './layout',
   './media',
   './analytics',
   './slides'
-], function($, _, events, scroll, viewport, layout, media, analytics, slides) {
+], function($, _, fc, scroll, viewport, layout, media, analytics, slides) {
   'use strict';
 
   var body;
@@ -23,30 +23,31 @@ define([
   var loadingStageComplete = _.after(loadingStateUntil.length, function() {
     _.defer(scroll.init);
     body.removeClass('loading');
-    events.trigger('loading:complete');
+    fc.trigger('loading:complete');
   });
 
   var setBindings = function() {
     _.each(loadingStateUntil, function(eventName) {
-      events.once(eventName, loadingStageComplete);
+      fc.after(eventName, loadingStageComplete);
     });
   };
 
   var init = function() {
     body = $('body');
 
-    setBindings();
-
     viewport.setViewport({
       topOffset: $('.navbar').outerHeight()
     });
 
     analytics.init();
+
     layout.init();
     media.init();
     slides.init();
 
-    events.trigger('main:ready');
+    setBindings();
+
+    fc.trigger('main:ready');
   };
 
   return {

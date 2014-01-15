@@ -2,11 +2,11 @@ define([
   'jquery',
   'lodash',
   'scroll',
-  'events',
+  'fc',
   'viewport',
   'settings',
   'mediaUtils'
-], function($, _, scroll, events, viewport, settings, mediaUtils) {
+], function($, _, scroll, fc, viewport, settings, mediaUtils) {
 
   var mediaAssets;
   var autoplayMedia;
@@ -250,7 +250,7 @@ define([
 
     setBindings();
 
-    events.trigger('media:ready');
+    fc.trigger('media:ready');
   };
 
   return {

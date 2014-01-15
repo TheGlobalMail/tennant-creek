@@ -6,9 +6,8 @@ define([
   'viewport',
   './media',
   'mediaUtils',
-  'scrollTo',
-  'events'
-], function($, _, settings, scroll, viewport, media, mediaUtils, scrollTo, events) {
+  'fc'
+], function($, _, settings, scroll, viewport, media, mediaUtils, fc) {
 
   var slideContainers;
   var slides;
@@ -234,7 +233,7 @@ define([
     var src = bgImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
     var image = $('<img src="' + src + '">');
     image.load(function() {
-      events.trigger('header-image:ready');
+      fc.trigger('header-image:ready');
     });
   };
 
