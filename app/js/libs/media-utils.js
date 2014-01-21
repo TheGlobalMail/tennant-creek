@@ -25,9 +25,6 @@ define([
   var load = function(element) {
     element = _unwrapElement(element);
     if (element.readyState !== 4) {
-      if (settings.debug) {
-        console.log('Loading media asset...', element);
-      }
       element.load();
     }
   };
@@ -46,7 +43,7 @@ define([
     }
 
     if (!isLoaded(element)) {
-      $(element).on('loadedmetadata', function() {
+      $(element).on('canplay', function() {
         play(element);
       });
     }
