@@ -33,7 +33,7 @@ define([
     return element.readyState === 4
   };
 
-  var play = function(element) {
+  var play = function(element, callback) {
     element = _unwrapElement(element);
     load(element);
 
@@ -44,7 +44,11 @@ define([
 
     if (!isLoaded(element)) {
       $(element).on('canplay', function() {
-        play(element);
+        if (callback) {
+          callback(element);
+        } else {
+          play(element);
+        }
       });
     }
 

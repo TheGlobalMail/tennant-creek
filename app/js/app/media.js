@@ -61,7 +61,11 @@ define([
       });
     }
 
-    mediaUtils.play(element);
+    mediaUtils.play(element, function(element) {
+      if (viewport.getPositionOf(element).inside) {
+        mediaUtils.play(element);
+      }
+    });
 
     loadNextPrevMediaAssets(element);
 
