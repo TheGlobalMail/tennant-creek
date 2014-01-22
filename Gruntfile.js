@@ -268,12 +268,12 @@ module.exports = function(grunt) {
     cdn: {
       dist: {
         src: ['<%= project.dist %>/index.html'],
-        cdn: 'http://tennant-creek.theglobalmail.org'
+        cdn: 'http://tennant-creek-assets.theglobalmail.org'
       },
 
       staging: {
         src: ['<%= cdn.dist.src %>'],
-        cdn: 'http://tennant-creek-staging.theglobalmail.org'
+        cdn: 'http://tennant-creek-staging-assets.theglobalmail.org'
       }
     },
 
